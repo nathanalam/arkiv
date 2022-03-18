@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-arkiv-dev-201829-authRole",
+      "UnauthRoleArn": "arn:aws:iam::806336907277:role/amplify-arkiv-dev-201829-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::806336907277:role/amplify-arkiv-dev-201829-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-arkiv-dev-201829-deployment",
+      "UnauthRoleName": "amplify-arkiv-dev-201829-unauthRole",
+      "StackName": "amplify-arkiv-dev-201829",
+      "StackId": "arn:aws:cloudformation:us-east-1:806336907277:stack/amplify-arkiv-dev-201829/efc51d70-a650-11ec-9196-1217d1bcb62b",
+      "AmplifyAppId": "d9txydaswn2l4"
+    },
+    "categories": {
+      "auth": {
+        "arkivc192d08a": {}
+      }
+    }
+  }
+}
