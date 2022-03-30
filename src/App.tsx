@@ -1,116 +1,55 @@
-import { Amplify, API, graphqlOperation } from 'aws-amplify';
+import { Amplify } from "aws-amplify";
 
-import { withAuthenticator } from '@aws-amplify/ui-react';
-import '@aws-amplify/ui-react/styles.css';
+import { withAuthenticator } from "@aws-amplify/ui-react";
+import "@aws-amplify/ui-react/styles.css";
 
-import { Component, useState } from 'react';
-import { createArticle, deleteArticle } from './graphql/mutations';
-import { listArticles } from './graphql/queries';
-
-import uuid from 'react-uuid'
-
-import awsExports from './aws-exports';
+import awsExports from "./aws-exports";
+import ArticleViewer from "./pages/create/GraphQlDemo";
+import { Link, Outlet, Route, Routes } from "react-router-dom";
+import Home from "./pages/Home";
+import NotFound from "./NotFound";
+import DemoView from "./pages/browse/DemoView";
 
 Amplify.configure(awsExports);
 
-type Article = {
-  id: string
-  name: string
-  arxivUrl: string
-  date: string
-  comments: string[]
-  subject: string
-};
-
-const AddArticle = ({addArticle}: {addArticle: (newArticle: Article) => void}) => {
-  
-  const [name, setName] = useState('');
-  const [date, setDate] = useState('');
-  const [arxivUrl, setArxivUrl] = useState('');
-  const [subject, setSubject] = useState('');
-
+function Layout() {
   return (
     <div>
-      <input
-        value={name}
-        onChange={({target}) => setName(target.value)}
-        placeholder="Article name"
-      />
-      <input
-        value={date}
-        onChange={({target}) => setDate(target.value)}
-        placeholder="Date"
-      />
-      <input
-        value={arxivUrl}
-        onChange={({target}) => setArxivUrl(target.value)}
-        placeholder="Arxiv link"
-      />
-      <input
-        value={subject}
-        onChange={({target}) => setSubject(target.value)}
-        placeholder="Subject"
-      />
-      <button onClick={() => addArticle({
-        id: uuid(),
-        name,
-        arxivUrl,
-        date,
-        comments: [],
-        subject
-      })}>Add Article</button>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/demo">GraphQL Demo</Link>
+          </li>
+          <li>
+            <Link to="view">View Demo</Link>
+          </li>
+        </ul>
+      </nav>
+
+      <hr />
+      <Outlet />
     </div>
   );
-}
-
-
-const ArticleList = ({articleList, deleteArticle}: {articleList: Article[], deleteArticle: (article: Article) => void}) => {
-  return (
-    <div>
-      {articleList.map(article =>
-        <div key={article.id}>
-          <a href={article.arxivUrl}>{article.arxivUrl}</a>
-          <button onClick={() => { deleteArticle(article) }}>x</button>
-        </div>
-      )}
-    </div>
-  );
-}
-
-const ArticleViewer = () => {
-  const [articles, setArticles] = useState<Article[]>([]);
-  const deleteArticle = async (article: Article) => {
-    const id = {
-      id: article.id
-    };
-    await API.graphql(graphqlOperation(deleteArticle, { input: id }));
-    setArticles(articles.filter(a => a.id !== article.id))
-  }
-
-  const addArticle = async (article: Article) => {
-    const result: any = await API.graphql(graphqlOperation(createArticle, { input: article }));
-    articles.push(result);
-    setArticles(articles);
-  }
-
-  return <div>
-    <AddArticle 
-      addArticle={addArticle}
-    />
-    <ArticleList 
-      articleList={articles}
-      deleteArticle={deleteArticle}
-    />
-  </div>
 }
 
 function App({ signOut, user }: any) {
   return (
-    <>
-      <h1>Hello {user.username}</h1>
-      <button onClick={signOut}>Sign out</button>
-      <ArticleViewer />
-    </>
+    <div>
+      <h1>Arkiv</h1>
+
+      <p>Site under construction: https://github.com/nathanalam/arkiv</p>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="demo" element={<ArticleViewer />} />
+          <Route path="view" element={<DemoView />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </div>
   );
 }
 

@@ -1,0 +1,14 @@
+{
+  "resourceName": "demopapers",
+  "policyUUID": "162f4df5",
+  "bucketName": "arkiv7f3210c0467d46a1880c5bc1efb2a594",
+  "storageAccess": "authAndGuest",
+  "guestAccess": [
+    "READ"
+  ],
+  "authAccess": [
+    "READ"
+  ],
+  "triggerFunction": "NONE",
+  "groupAccess": {}
+}

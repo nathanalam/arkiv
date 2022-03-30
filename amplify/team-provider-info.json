@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "arkivc192d08a": {}
+        "arkivc192d08a": {},
+        "true": {}
       }
     }
   }
