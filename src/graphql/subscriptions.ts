@@ -25,13 +25,24 @@ export const onCreateArticle = /* GraphQL */ `
         articles {
           nextToken
         }
+        subscribers {
+          nextToken
+        }
         createdAt
         updatedAt
-        userSubscribedSubjectsId
+      }
+      users {
+        items {
+          id
+          articleID
+          userID
+          createdAt
+          updatedAt
+        }
+        nextToken
       }
       createdAt
       updatedAt
-      userSavedArticlesId
       subjectArticlesId
     }
   }
@@ -59,13 +70,24 @@ export const onUpdateArticle = /* GraphQL */ `
         articles {
           nextToken
         }
+        subscribers {
+          nextToken
+        }
         createdAt
         updatedAt
-        userSubscribedSubjectsId
+      }
+      users {
+        items {
+          id
+          articleID
+          userID
+          createdAt
+          updatedAt
+        }
+        nextToken
       }
       createdAt
       updatedAt
-      userSavedArticlesId
       subjectArticlesId
     }
   }
@@ -93,13 +115,24 @@ export const onDeleteArticle = /* GraphQL */ `
         articles {
           nextToken
         }
+        subscribers {
+          nextToken
+        }
         createdAt
         updatedAt
-        userSubscribedSubjectsId
+      }
+      users {
+        items {
+          id
+          articleID
+          userID
+          createdAt
+          updatedAt
+        }
+        nextToken
       }
       createdAt
       updatedAt
-      userSavedArticlesId
       subjectArticlesId
     }
   }
@@ -112,23 +145,20 @@ export const onCreateUser = /* GraphQL */ `
       savedArticles {
         items {
           id
-          name
-          arxivUrl
-          date
+          articleID
+          userID
           createdAt
           updatedAt
-          userSavedArticlesId
-          subjectArticlesId
         }
         nextToken
       }
       subscribedSubjects {
         items {
           id
-          title
+          userID
+          subjectID
           createdAt
           updatedAt
-          userSubscribedSubjectsId
         }
         nextToken
       }
@@ -145,23 +175,20 @@ export const onUpdateUser = /* GraphQL */ `
       savedArticles {
         items {
           id
-          name
-          arxivUrl
-          date
+          articleID
+          userID
           createdAt
           updatedAt
-          userSavedArticlesId
-          subjectArticlesId
         }
         nextToken
       }
       subscribedSubjects {
         items {
           id
-          title
+          userID
+          subjectID
           createdAt
           updatedAt
-          userSubscribedSubjectsId
         }
         nextToken
       }
@@ -178,23 +205,20 @@ export const onDeleteUser = /* GraphQL */ `
       savedArticles {
         items {
           id
-          name
-          arxivUrl
-          date
+          articleID
+          userID
           createdAt
           updatedAt
-          userSavedArticlesId
-          subjectArticlesId
         }
         nextToken
       }
       subscribedSubjects {
         items {
           id
-          title
+          userID
+          subjectID
           createdAt
           updatedAt
-          userSubscribedSubjectsId
         }
         nextToken
       }
@@ -216,14 +240,22 @@ export const onCreateSubject = /* GraphQL */ `
           date
           createdAt
           updatedAt
-          userSavedArticlesId
           subjectArticlesId
+        }
+        nextToken
+      }
+      subscribers {
+        items {
+          id
+          userID
+          subjectID
+          createdAt
+          updatedAt
         }
         nextToken
       }
       createdAt
       updatedAt
-      userSubscribedSubjectsId
     }
   }
 `;
@@ -240,14 +272,22 @@ export const onUpdateSubject = /* GraphQL */ `
           date
           createdAt
           updatedAt
-          userSavedArticlesId
           subjectArticlesId
+        }
+        nextToken
+      }
+      subscribers {
+        items {
+          id
+          userID
+          subjectID
+          createdAt
+          updatedAt
         }
         nextToken
       }
       createdAt
       updatedAt
-      userSubscribedSubjectsId
     }
   }
 `;
@@ -264,14 +304,22 @@ export const onDeleteSubject = /* GraphQL */ `
           date
           createdAt
           updatedAt
-          userSavedArticlesId
           subjectArticlesId
+        }
+        nextToken
+      }
+      subscribers {
+        items {
+          id
+          userID
+          subjectID
+          createdAt
+          updatedAt
         }
         nextToken
       }
       createdAt
       updatedAt
-      userSubscribedSubjectsId
     }
   }
 `;
@@ -292,11 +340,12 @@ export const onCreateComment = /* GraphQL */ `
           title
           createdAt
           updatedAt
-          userSubscribedSubjectsId
+        }
+        users {
+          nextToken
         }
         createdAt
         updatedAt
-        userSavedArticlesId
         subjectArticlesId
       }
       content
@@ -323,11 +372,12 @@ export const onUpdateComment = /* GraphQL */ `
           title
           createdAt
           updatedAt
-          userSubscribedSubjectsId
+        }
+        users {
+          nextToken
         }
         createdAt
         updatedAt
-        userSavedArticlesId
         subjectArticlesId
       }
       content
@@ -354,17 +404,255 @@ export const onDeleteComment = /* GraphQL */ `
           title
           createdAt
           updatedAt
-          userSubscribedSubjectsId
+        }
+        users {
+          nextToken
         }
         createdAt
         updatedAt
-        userSavedArticlesId
         subjectArticlesId
       }
       content
       createdAt
       updatedAt
       articleCommentsId
+    }
+  }
+`;
+export const onCreateUserLibrary = /* GraphQL */ `
+  subscription OnCreateUserLibrary {
+    onCreateUserLibrary {
+      id
+      articleID
+      userID
+      article {
+        id
+        name
+        arxivUrl
+        date
+        comments {
+          nextToken
+        }
+        subject {
+          id
+          title
+          createdAt
+          updatedAt
+        }
+        users {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        subjectArticlesId
+      }
+      user {
+        id
+        name
+        savedArticles {
+          nextToken
+        }
+        subscribedSubjects {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateUserLibrary = /* GraphQL */ `
+  subscription OnUpdateUserLibrary {
+    onUpdateUserLibrary {
+      id
+      articleID
+      userID
+      article {
+        id
+        name
+        arxivUrl
+        date
+        comments {
+          nextToken
+        }
+        subject {
+          id
+          title
+          createdAt
+          updatedAt
+        }
+        users {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        subjectArticlesId
+      }
+      user {
+        id
+        name
+        savedArticles {
+          nextToken
+        }
+        subscribedSubjects {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteUserLibrary = /* GraphQL */ `
+  subscription OnDeleteUserLibrary {
+    onDeleteUserLibrary {
+      id
+      articleID
+      userID
+      article {
+        id
+        name
+        arxivUrl
+        date
+        comments {
+          nextToken
+        }
+        subject {
+          id
+          title
+          createdAt
+          updatedAt
+        }
+        users {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        subjectArticlesId
+      }
+      user {
+        id
+        name
+        savedArticles {
+          nextToken
+        }
+        subscribedSubjects {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateSubjectCatalog = /* GraphQL */ `
+  subscription OnCreateSubjectCatalog {
+    onCreateSubjectCatalog {
+      id
+      userID
+      subjectID
+      user {
+        id
+        name
+        savedArticles {
+          nextToken
+        }
+        subscribedSubjects {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      subject {
+        id
+        title
+        articles {
+          nextToken
+        }
+        subscribers {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateSubjectCatalog = /* GraphQL */ `
+  subscription OnUpdateSubjectCatalog {
+    onUpdateSubjectCatalog {
+      id
+      userID
+      subjectID
+      user {
+        id
+        name
+        savedArticles {
+          nextToken
+        }
+        subscribedSubjects {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      subject {
+        id
+        title
+        articles {
+          nextToken
+        }
+        subscribers {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteSubjectCatalog = /* GraphQL */ `
+  subscription OnDeleteSubjectCatalog {
+    onDeleteSubjectCatalog {
+      id
+      userID
+      subjectID
+      user {
+        id
+        name
+        savedArticles {
+          nextToken
+        }
+        subscribedSubjects {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      subject {
+        id
+        title
+        articles {
+          nextToken
+        }
+        subscribers {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
     }
   }
 `;

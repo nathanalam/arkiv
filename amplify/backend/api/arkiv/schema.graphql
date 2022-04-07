@@ -9,19 +9,21 @@ type Article @model {
   date: AWSDate!
   comments: [Comment] @hasMany
   subject: Subject! @belongsTo
+  users: [User] @manyToMany(relationName: "UserLibrary")
 }
 
 type User @model {
   id: ID!
   name: String!
-  savedArticles: [Article] @hasMany
-  subscribedSubjects: [Subject] @hasMany
+  savedArticles: [Article] @manyToMany(relationName: "UserLibrary")
+  subscribedSubjects: [Subject] @manyToMany(relationName: "SubjectCatalog")
 }
 
 type Subject @model {
   id: ID!
   title: String!
   articles: [Article] @hasMany
+  subscribers: [User] @manyToMany(relationName: "SubjectCatalog")
 }
 
 type Comment @model {

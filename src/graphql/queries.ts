@@ -25,13 +25,24 @@ export const getArticle = /* GraphQL */ `
         articles {
           nextToken
         }
+        subscribers {
+          nextToken
+        }
         createdAt
         updatedAt
-        userSubscribedSubjectsId
+      }
+      users {
+        items {
+          id
+          articleID
+          userID
+          createdAt
+          updatedAt
+        }
+        nextToken
       }
       createdAt
       updatedAt
-      userSavedArticlesId
       subjectArticlesId
     }
   }
@@ -56,11 +67,12 @@ export const listArticles = /* GraphQL */ `
           title
           createdAt
           updatedAt
-          userSubscribedSubjectsId
+        }
+        users {
+          nextToken
         }
         createdAt
         updatedAt
-        userSavedArticlesId
         subjectArticlesId
       }
       nextToken
@@ -75,23 +87,20 @@ export const getUser = /* GraphQL */ `
       savedArticles {
         items {
           id
-          name
-          arxivUrl
-          date
+          articleID
+          userID
           createdAt
           updatedAt
-          userSavedArticlesId
-          subjectArticlesId
         }
         nextToken
       }
       subscribedSubjects {
         items {
           id
-          title
+          userID
+          subjectID
           createdAt
           updatedAt
-          userSubscribedSubjectsId
         }
         nextToken
       }
@@ -136,14 +145,22 @@ export const getSubject = /* GraphQL */ `
           date
           createdAt
           updatedAt
-          userSavedArticlesId
           subjectArticlesId
+        }
+        nextToken
+      }
+      subscribers {
+        items {
+          id
+          userID
+          subjectID
+          createdAt
+          updatedAt
         }
         nextToken
       }
       createdAt
       updatedAt
-      userSubscribedSubjectsId
     }
   }
 `;
@@ -160,9 +177,11 @@ export const listSubjects = /* GraphQL */ `
         articles {
           nextToken
         }
+        subscribers {
+          nextToken
+        }
         createdAt
         updatedAt
-        userSubscribedSubjectsId
       }
       nextToken
     }
@@ -185,11 +204,12 @@ export const getComment = /* GraphQL */ `
           title
           createdAt
           updatedAt
-          userSubscribedSubjectsId
+        }
+        users {
+          nextToken
         }
         createdAt
         updatedAt
-        userSavedArticlesId
         subjectArticlesId
       }
       content
@@ -215,13 +235,154 @@ export const listComments = /* GraphQL */ `
           date
           createdAt
           updatedAt
-          userSavedArticlesId
           subjectArticlesId
         }
         content
         createdAt
         updatedAt
         articleCommentsId
+      }
+      nextToken
+    }
+  }
+`;
+export const getUserLibrary = /* GraphQL */ `
+  query GetUserLibrary($id: ID!) {
+    getUserLibrary(id: $id) {
+      id
+      articleID
+      userID
+      article {
+        id
+        name
+        arxivUrl
+        date
+        comments {
+          nextToken
+        }
+        subject {
+          id
+          title
+          createdAt
+          updatedAt
+        }
+        users {
+          nextToken
+        }
+        createdAt
+        updatedAt
+        subjectArticlesId
+      }
+      user {
+        id
+        name
+        savedArticles {
+          nextToken
+        }
+        subscribedSubjects {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUserLibraries = /* GraphQL */ `
+  query ListUserLibraries(
+    $filter: ModelUserLibraryFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserLibraries(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        articleID
+        userID
+        article {
+          id
+          name
+          arxivUrl
+          date
+          createdAt
+          updatedAt
+          subjectArticlesId
+        }
+        user {
+          id
+          name
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getSubjectCatalog = /* GraphQL */ `
+  query GetSubjectCatalog($id: ID!) {
+    getSubjectCatalog(id: $id) {
+      id
+      userID
+      subjectID
+      user {
+        id
+        name
+        savedArticles {
+          nextToken
+        }
+        subscribedSubjects {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      subject {
+        id
+        title
+        articles {
+          nextToken
+        }
+        subscribers {
+          nextToken
+        }
+        createdAt
+        updatedAt
+      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listSubjectCatalogs = /* GraphQL */ `
+  query ListSubjectCatalogs(
+    $filter: ModelSubjectCatalogFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listSubjectCatalogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userID
+        subjectID
+        user {
+          id
+          name
+          createdAt
+          updatedAt
+        }
+        subject {
+          id
+          title
+          createdAt
+          updatedAt
+        }
+        createdAt
+        updatedAt
       }
       nextToken
     }

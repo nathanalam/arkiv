@@ -1,6 +1,8 @@
-import { Storage } from "aws-amplify";
+import { API, graphqlOperation } from "aws-amplify";
 import { Document, Page, pdfjs } from "react-pdf";
 import { useEffect, useState } from "react";
+import { getArticle } from "../../graphql/queries";
+import { Article } from "../../API";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
 
@@ -26,14 +28,23 @@ const ArticleRendered = ({ url }: { url: string }) => {
   );
 };
 
-const DemoView = () => {
+interface DemoViewProps {
+  articleId: string;
+}
+
+const DemoView = (props: DemoViewProps) => {
   const [articleContent, setArticleContent] = useState(<ArticleLoading />);
   // get key from Storage.list;
   useEffect(() => {
     // declare the data fetching function
     const fetchPdf = async () => {
-      const signedURL = await Storage.get("demo.pdf");
-      setArticleContent(<ArticleRendered url={signedURL} />);
+      // const signedURL = await Storage.get("demo.pdf");
+      const article = (
+        (await API.graphql(
+          graphqlOperation(getArticle, { id: props.articleId })
+        )) as any
+      ).data.getArticle as Article;
+      setArticleContent(<ArticleRendered url={article.arxivUrl} />);
     };
 
     // call the function
@@ -41,12 +52,7 @@ const DemoView = () => {
       // make sure to catch any error
       .catch(console.error);
   }, []);
-  return (
-    <div>
-      <h1>Welcome to Arkiv</h1>
-      {articleContent}
-    </div>
-  );
+  return <div>{articleContent}</div>;
 };
 
 export default DemoView;
