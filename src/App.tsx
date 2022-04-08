@@ -4,44 +4,20 @@ import { withAuthenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 
 import awsExports from "./aws-exports";
-import ArticleViewer from "./pages/create/GraphQlDemo";
-import { Link, Outlet, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import NotFound from "./pages/NotFound";
-import DemoView from "./pages/browse/DemoView";
 
 import { initializeIcons } from "@fluentui/react/lib/Icons";
 import { useEffect, useState } from "react";
 import { getUser } from "./graphql/queries";
 import { User } from "./API";
 import { createUser } from "./graphql/mutations";
+import ArticleViewer from "./pages/browse/ArticleViewer";
 
 initializeIcons(/* optional base url */);
 
 Amplify.configure(awsExports);
-
-function Layout() {
-  return (
-    <div>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/demo">GraphQL Demo</Link>
-          </li>
-          <li>
-            <Link to="view">View Demo</Link>
-          </li>
-        </ul>
-      </nav>
-
-      <hr />
-      <Outlet />
-    </div>
-  );
-}
 
 const App = ({ signOut, user }: any) => {
   const [dbUser, setDbUser] = useState<User | null>(null);
@@ -75,17 +51,14 @@ const App = ({ signOut, user }: any) => {
     fetchUser()
       // make sure to catch any error
       .catch(console.error);
-  }, [user.username]);
+  }, [user.username, user.attributes.email]);
   return (
     <div>
-      <h1>Arkiv</h1>
-
-      <p>Site under construction: https://github.com/nathanalam/arkiv</p>
       {dbUser != null && (
         <Routes>
-          <Route path="/" element={<Layout />}>
+          <Route path="/">
             <Route index element={<Home user={dbUser} />} />
-            <Route path="demo" element={<ArticleViewer />} />
+            <Route path="articles" element={<ArticleViewer user={dbUser}/>}/> 
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

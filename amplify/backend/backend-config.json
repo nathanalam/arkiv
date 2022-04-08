@@ -17,7 +17,7 @@
     }
   },
   "auth": {
-    "arkivc192d08a": {
+    "arkivb955016b": {
       "service": "Cognito",
       "providerPlugin": "awscloudformation",
       "dependsOn": [],
@@ -44,11 +44,11 @@
       }
     }
   },
-  "storage": {
-    "demopapers": {
-      "service": "S3",
-      "providerPlugin": "awscloudformation",
-      "dependsOn": []
+  "hosting": {
+    "amplifyhosting": {
+      "service": "amplifyhosting",
+      "type": "cicd",
+      "lastPushTimeStamp": "2022-04-10T20:27:16.844Z"
     }
   }
 }

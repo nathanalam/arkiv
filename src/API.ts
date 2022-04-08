@@ -5,19 +5,17 @@
 export type CreateArticleInput = {
   id?: string | null,
   name: string,
-  arxivUrl: string,
+  url: string,
   date: string,
-  subjectArticlesId?: string | null,
 };
 
 export type ModelArticleConditionInput = {
   name?: ModelStringInput | null,
-  arxivUrl?: ModelStringInput | null,
+  url?: ModelStringInput | null,
   date?: ModelStringInput | null,
   and?: Array< ModelArticleConditionInput | null > | null,
   or?: Array< ModelArticleConditionInput | null > | null,
   not?: ModelArticleConditionInput | null,
-  subjectArticlesId?: ModelIDInput | null,
 };
 
 export type ModelStringInput = {
@@ -60,34 +58,16 @@ export type ModelSizeInput = {
   between?: Array< number | null > | null,
 };
 
-export type ModelIDInput = {
-  ne?: string | null,
-  eq?: string | null,
-  le?: string | null,
-  lt?: string | null,
-  ge?: string | null,
-  gt?: string | null,
-  contains?: string | null,
-  notContains?: string | null,
-  between?: Array< string | null > | null,
-  beginsWith?: string | null,
-  attributeExists?: boolean | null,
-  attributeType?: ModelAttributeTypes | null,
-  size?: ModelSizeInput | null,
-};
-
 export type Article = {
   __typename: "Article",
   id: string,
   name: string,
-  arxivUrl: string,
+  url: string,
   date: string,
   comments?: ModelCommentConnection | null,
-  subject: Subject,
   users?: ModelUserLibraryConnection | null,
   createdAt: string,
   updatedAt: string,
-  subjectArticlesId?: string | null,
 };
 
 export type ModelCommentConnection = {
@@ -104,49 +84,6 @@ export type Comment = {
   createdAt: string,
   updatedAt: string,
   articleCommentsId?: string | null,
-};
-
-export type Subject = {
-  __typename: "Subject",
-  id: string,
-  title: string,
-  articles?: ModelArticleConnection | null,
-  subscribers?: ModelSubjectCatalogConnection | null,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type ModelArticleConnection = {
-  __typename: "ModelArticleConnection",
-  items:  Array<Article | null >,
-  nextToken?: string | null,
-};
-
-export type ModelSubjectCatalogConnection = {
-  __typename: "ModelSubjectCatalogConnection",
-  items:  Array<SubjectCatalog | null >,
-  nextToken?: string | null,
-};
-
-export type SubjectCatalog = {
-  __typename: "SubjectCatalog",
-  id: string,
-  userID: string,
-  subjectID: string,
-  user: User,
-  subject: Subject,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type User = {
-  __typename: "User",
-  id: string,
-  name: string,
-  savedArticles?: ModelUserLibraryConnection | null,
-  subscribedSubjects?: ModelSubjectCatalogConnection | null,
-  createdAt: string,
-  updatedAt: string,
 };
 
 export type ModelUserLibraryConnection = {
@@ -166,12 +103,20 @@ export type UserLibrary = {
   updatedAt: string,
 };
 
+export type User = {
+  __typename: "User",
+  id: string,
+  name: string,
+  savedArticles?: ModelUserLibraryConnection | null,
+  createdAt: string,
+  updatedAt: string,
+};
+
 export type UpdateArticleInput = {
   id: string,
   name?: string | null,
-  arxivUrl?: string | null,
+  url?: string | null,
   date?: string | null,
-  subjectArticlesId?: string | null,
 };
 
 export type DeleteArticleInput = {
@@ -199,27 +144,6 @@ export type DeleteUserInput = {
   id: string,
 };
 
-export type CreateSubjectInput = {
-  id?: string | null,
-  title: string,
-};
-
-export type ModelSubjectConditionInput = {
-  title?: ModelStringInput | null,
-  and?: Array< ModelSubjectConditionInput | null > | null,
-  or?: Array< ModelSubjectConditionInput | null > | null,
-  not?: ModelSubjectConditionInput | null,
-};
-
-export type UpdateSubjectInput = {
-  id: string,
-  title?: string | null,
-};
-
-export type DeleteSubjectInput = {
-  id: string,
-};
-
 export type CreateCommentInput = {
   id?: string | null,
   content: string,
@@ -232,6 +156,22 @@ export type ModelCommentConditionInput = {
   or?: Array< ModelCommentConditionInput | null > | null,
   not?: ModelCommentConditionInput | null,
   articleCommentsId?: ModelIDInput | null,
+};
+
+export type ModelIDInput = {
+  ne?: string | null,
+  eq?: string | null,
+  le?: string | null,
+  lt?: string | null,
+  ge?: string | null,
+  gt?: string | null,
+  contains?: string | null,
+  notContains?: string | null,
+  between?: Array< string | null > | null,
+  beginsWith?: string | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+  size?: ModelSizeInput | null,
 };
 
 export type UpdateCommentInput = {
@@ -268,39 +208,20 @@ export type DeleteUserLibraryInput = {
   id: string,
 };
 
-export type CreateSubjectCatalogInput = {
-  id?: string | null,
-  userID: string,
-  subjectID: string,
-};
-
-export type ModelSubjectCatalogConditionInput = {
-  userID?: ModelIDInput | null,
-  subjectID?: ModelIDInput | null,
-  and?: Array< ModelSubjectCatalogConditionInput | null > | null,
-  or?: Array< ModelSubjectCatalogConditionInput | null > | null,
-  not?: ModelSubjectCatalogConditionInput | null,
-};
-
-export type UpdateSubjectCatalogInput = {
-  id: string,
-  userID?: string | null,
-  subjectID?: string | null,
-};
-
-export type DeleteSubjectCatalogInput = {
-  id: string,
-};
-
 export type ModelArticleFilterInput = {
   id?: ModelIDInput | null,
   name?: ModelStringInput | null,
-  arxivUrl?: ModelStringInput | null,
+  url?: ModelStringInput | null,
   date?: ModelStringInput | null,
   and?: Array< ModelArticleFilterInput | null > | null,
   or?: Array< ModelArticleFilterInput | null > | null,
   not?: ModelArticleFilterInput | null,
-  subjectArticlesId?: ModelIDInput | null,
+};
+
+export type ModelArticleConnection = {
+  __typename: "ModelArticleConnection",
+  items:  Array<Article | null >,
+  nextToken?: string | null,
 };
 
 export type ModelUserFilterInput = {
@@ -314,20 +235,6 @@ export type ModelUserFilterInput = {
 export type ModelUserConnection = {
   __typename: "ModelUserConnection",
   items:  Array<User | null >,
-  nextToken?: string | null,
-};
-
-export type ModelSubjectFilterInput = {
-  id?: ModelIDInput | null,
-  title?: ModelStringInput | null,
-  and?: Array< ModelSubjectFilterInput | null > | null,
-  or?: Array< ModelSubjectFilterInput | null > | null,
-  not?: ModelSubjectFilterInput | null,
-};
-
-export type ModelSubjectConnection = {
-  __typename: "ModelSubjectConnection",
-  items:  Array<Subject | null >,
   nextToken?: string | null,
 };
 
@@ -349,15 +256,6 @@ export type ModelUserLibraryFilterInput = {
   not?: ModelUserLibraryFilterInput | null,
 };
 
-export type ModelSubjectCatalogFilterInput = {
-  id?: ModelIDInput | null,
-  userID?: ModelIDInput | null,
-  subjectID?: ModelIDInput | null,
-  and?: Array< ModelSubjectCatalogFilterInput | null > | null,
-  or?: Array< ModelSubjectCatalogFilterInput | null > | null,
-  not?: ModelSubjectCatalogFilterInput | null,
-};
-
 export type CreateArticleMutationVariables = {
   input: CreateArticleInput,
   condition?: ModelArticleConditionInput | null,
@@ -368,7 +266,7 @@ export type CreateArticleMutation = {
     __typename: "Article",
     id: string,
     name: string,
-    arxivUrl: string,
+    url: string,
     date: string,
     comments?:  {
       __typename: "ModelCommentConnection",
@@ -382,21 +280,6 @@ export type CreateArticleMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    subject:  {
-      __typename: "Subject",
-      id: string,
-      title: string,
-      articles?:  {
-        __typename: "ModelArticleConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribers?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     users?:  {
       __typename: "ModelUserLibraryConnection",
       items:  Array< {
@@ -411,7 +294,6 @@ export type CreateArticleMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    subjectArticlesId?: string | null,
   } | null,
 };
 
@@ -425,7 +307,7 @@ export type UpdateArticleMutation = {
     __typename: "Article",
     id: string,
     name: string,
-    arxivUrl: string,
+    url: string,
     date: string,
     comments?:  {
       __typename: "ModelCommentConnection",
@@ -439,21 +321,6 @@ export type UpdateArticleMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    subject:  {
-      __typename: "Subject",
-      id: string,
-      title: string,
-      articles?:  {
-        __typename: "ModelArticleConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribers?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     users?:  {
       __typename: "ModelUserLibraryConnection",
       items:  Array< {
@@ -468,7 +335,6 @@ export type UpdateArticleMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    subjectArticlesId?: string | null,
   } | null,
 };
 
@@ -482,7 +348,7 @@ export type DeleteArticleMutation = {
     __typename: "Article",
     id: string,
     name: string,
-    arxivUrl: string,
+    url: string,
     date: string,
     comments?:  {
       __typename: "ModelCommentConnection",
@@ -496,21 +362,6 @@ export type DeleteArticleMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    subject:  {
-      __typename: "Subject",
-      id: string,
-      title: string,
-      articles?:  {
-        __typename: "ModelArticleConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribers?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     users?:  {
       __typename: "ModelUserLibraryConnection",
       items:  Array< {
@@ -525,7 +376,6 @@ export type DeleteArticleMutation = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    subjectArticlesId?: string | null,
   } | null,
 };
 
@@ -546,18 +396,6 @@ export type CreateUserMutation = {
         id: string,
         articleID: string,
         userID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    subscribedSubjects?:  {
-      __typename: "ModelSubjectCatalogConnection",
-      items:  Array< {
-        __typename: "SubjectCatalog",
-        id: string,
-        userID: string,
-        subjectID: string,
         createdAt: string,
         updatedAt: string,
       } | null >,
@@ -590,18 +428,6 @@ export type UpdateUserMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    subscribedSubjects?:  {
-      __typename: "ModelSubjectCatalogConnection",
-      items:  Array< {
-        __typename: "SubjectCatalog",
-        id: string,
-        userID: string,
-        subjectID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -629,141 +455,6 @@ export type DeleteUserMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    subscribedSubjects?:  {
-      __typename: "ModelSubjectCatalogConnection",
-      items:  Array< {
-        __typename: "SubjectCatalog",
-        id: string,
-        userID: string,
-        subjectID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type CreateSubjectMutationVariables = {
-  input: CreateSubjectInput,
-  condition?: ModelSubjectConditionInput | null,
-};
-
-export type CreateSubjectMutation = {
-  createSubject?:  {
-    __typename: "Subject",
-    id: string,
-    title: string,
-    articles?:  {
-      __typename: "ModelArticleConnection",
-      items:  Array< {
-        __typename: "Article",
-        id: string,
-        name: string,
-        arxivUrl: string,
-        date: string,
-        createdAt: string,
-        updatedAt: string,
-        subjectArticlesId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    subscribers?:  {
-      __typename: "ModelSubjectCatalogConnection",
-      items:  Array< {
-        __typename: "SubjectCatalog",
-        id: string,
-        userID: string,
-        subjectID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type UpdateSubjectMutationVariables = {
-  input: UpdateSubjectInput,
-  condition?: ModelSubjectConditionInput | null,
-};
-
-export type UpdateSubjectMutation = {
-  updateSubject?:  {
-    __typename: "Subject",
-    id: string,
-    title: string,
-    articles?:  {
-      __typename: "ModelArticleConnection",
-      items:  Array< {
-        __typename: "Article",
-        id: string,
-        name: string,
-        arxivUrl: string,
-        date: string,
-        createdAt: string,
-        updatedAt: string,
-        subjectArticlesId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    subscribers?:  {
-      __typename: "ModelSubjectCatalogConnection",
-      items:  Array< {
-        __typename: "SubjectCatalog",
-        id: string,
-        userID: string,
-        subjectID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type DeleteSubjectMutationVariables = {
-  input: DeleteSubjectInput,
-  condition?: ModelSubjectConditionInput | null,
-};
-
-export type DeleteSubjectMutation = {
-  deleteSubject?:  {
-    __typename: "Subject",
-    id: string,
-    title: string,
-    articles?:  {
-      __typename: "ModelArticleConnection",
-      items:  Array< {
-        __typename: "Article",
-        id: string,
-        name: string,
-        arxivUrl: string,
-        date: string,
-        createdAt: string,
-        updatedAt: string,
-        subjectArticlesId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    subscribers?:  {
-      __typename: "ModelSubjectCatalogConnection",
-      items:  Array< {
-        __typename: "SubjectCatalog",
-        id: string,
-        userID: string,
-        subjectID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -782,26 +473,18 @@ export type CreateCommentMutation = {
       __typename: "Article",
       id: string,
       name: string,
-      arxivUrl: string,
+      url: string,
       date: string,
       comments?:  {
         __typename: "ModelCommentConnection",
         nextToken?: string | null,
       } | null,
-      subject:  {
-        __typename: "Subject",
-        id: string,
-        title: string,
-        createdAt: string,
-        updatedAt: string,
-      },
       users?:  {
         __typename: "ModelUserLibraryConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      subjectArticlesId?: string | null,
     },
     content: string,
     createdAt: string,
@@ -823,26 +506,18 @@ export type UpdateCommentMutation = {
       __typename: "Article",
       id: string,
       name: string,
-      arxivUrl: string,
+      url: string,
       date: string,
       comments?:  {
         __typename: "ModelCommentConnection",
         nextToken?: string | null,
       } | null,
-      subject:  {
-        __typename: "Subject",
-        id: string,
-        title: string,
-        createdAt: string,
-        updatedAt: string,
-      },
       users?:  {
         __typename: "ModelUserLibraryConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      subjectArticlesId?: string | null,
     },
     content: string,
     createdAt: string,
@@ -864,26 +539,18 @@ export type DeleteCommentMutation = {
       __typename: "Article",
       id: string,
       name: string,
-      arxivUrl: string,
+      url: string,
       date: string,
       comments?:  {
         __typename: "ModelCommentConnection",
         nextToken?: string | null,
       } | null,
-      subject:  {
-        __typename: "Subject",
-        id: string,
-        title: string,
-        createdAt: string,
-        updatedAt: string,
-      },
       users?:  {
         __typename: "ModelUserLibraryConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      subjectArticlesId?: string | null,
     },
     content: string,
     createdAt: string,
@@ -907,26 +574,18 @@ export type CreateUserLibraryMutation = {
       __typename: "Article",
       id: string,
       name: string,
-      arxivUrl: string,
+      url: string,
       date: string,
       comments?:  {
         __typename: "ModelCommentConnection",
         nextToken?: string | null,
       } | null,
-      subject:  {
-        __typename: "Subject",
-        id: string,
-        title: string,
-        createdAt: string,
-        updatedAt: string,
-      },
       users?:  {
         __typename: "ModelUserLibraryConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      subjectArticlesId?: string | null,
     },
     user:  {
       __typename: "User",
@@ -934,10 +593,6 @@ export type CreateUserLibraryMutation = {
       name: string,
       savedArticles?:  {
         __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribedSubjects?:  {
-        __typename: "ModelSubjectCatalogConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -963,26 +618,18 @@ export type UpdateUserLibraryMutation = {
       __typename: "Article",
       id: string,
       name: string,
-      arxivUrl: string,
+      url: string,
       date: string,
       comments?:  {
         __typename: "ModelCommentConnection",
         nextToken?: string | null,
       } | null,
-      subject:  {
-        __typename: "Subject",
-        id: string,
-        title: string,
-        createdAt: string,
-        updatedAt: string,
-      },
       users?:  {
         __typename: "ModelUserLibraryConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      subjectArticlesId?: string | null,
     },
     user:  {
       __typename: "User",
@@ -990,10 +637,6 @@ export type UpdateUserLibraryMutation = {
       name: string,
       savedArticles?:  {
         __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribedSubjects?:  {
-        __typename: "ModelSubjectCatalogConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -1019,26 +662,18 @@ export type DeleteUserLibraryMutation = {
       __typename: "Article",
       id: string,
       name: string,
-      arxivUrl: string,
+      url: string,
       date: string,
       comments?:  {
         __typename: "ModelCommentConnection",
         nextToken?: string | null,
       } | null,
-      subject:  {
-        __typename: "Subject",
-        id: string,
-        title: string,
-        createdAt: string,
-        updatedAt: string,
-      },
       users?:  {
         __typename: "ModelUserLibraryConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      subjectArticlesId?: string | null,
     },
     user:  {
       __typename: "User",
@@ -1046,148 +681,6 @@ export type DeleteUserLibraryMutation = {
       name: string,
       savedArticles?:  {
         __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribedSubjects?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type CreateSubjectCatalogMutationVariables = {
-  input: CreateSubjectCatalogInput,
-  condition?: ModelSubjectCatalogConditionInput | null,
-};
-
-export type CreateSubjectCatalogMutation = {
-  createSubjectCatalog?:  {
-    __typename: "SubjectCatalog",
-    id: string,
-    userID: string,
-    subjectID: string,
-    user:  {
-      __typename: "User",
-      id: string,
-      name: string,
-      savedArticles?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribedSubjects?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    subject:  {
-      __typename: "Subject",
-      id: string,
-      title: string,
-      articles?:  {
-        __typename: "ModelArticleConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribers?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type UpdateSubjectCatalogMutationVariables = {
-  input: UpdateSubjectCatalogInput,
-  condition?: ModelSubjectCatalogConditionInput | null,
-};
-
-export type UpdateSubjectCatalogMutation = {
-  updateSubjectCatalog?:  {
-    __typename: "SubjectCatalog",
-    id: string,
-    userID: string,
-    subjectID: string,
-    user:  {
-      __typename: "User",
-      id: string,
-      name: string,
-      savedArticles?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribedSubjects?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    subject:  {
-      __typename: "Subject",
-      id: string,
-      title: string,
-      articles?:  {
-        __typename: "ModelArticleConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribers?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type DeleteSubjectCatalogMutationVariables = {
-  input: DeleteSubjectCatalogInput,
-  condition?: ModelSubjectCatalogConditionInput | null,
-};
-
-export type DeleteSubjectCatalogMutation = {
-  deleteSubjectCatalog?:  {
-    __typename: "SubjectCatalog",
-    id: string,
-    userID: string,
-    subjectID: string,
-    user:  {
-      __typename: "User",
-      id: string,
-      name: string,
-      savedArticles?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribedSubjects?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    subject:  {
-      __typename: "Subject",
-      id: string,
-      title: string,
-      articles?:  {
-        __typename: "ModelArticleConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribers?:  {
-        __typename: "ModelSubjectCatalogConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -1207,7 +700,7 @@ export type GetArticleQuery = {
     __typename: "Article",
     id: string,
     name: string,
-    arxivUrl: string,
+    url: string,
     date: string,
     comments?:  {
       __typename: "ModelCommentConnection",
@@ -1221,21 +714,6 @@ export type GetArticleQuery = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    subject:  {
-      __typename: "Subject",
-      id: string,
-      title: string,
-      articles?:  {
-        __typename: "ModelArticleConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribers?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     users?:  {
       __typename: "ModelUserLibraryConnection",
       items:  Array< {
@@ -1250,7 +728,6 @@ export type GetArticleQuery = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    subjectArticlesId?: string | null,
   } | null,
 };
 
@@ -1267,26 +744,18 @@ export type ListArticlesQuery = {
       __typename: "Article",
       id: string,
       name: string,
-      arxivUrl: string,
+      url: string,
       date: string,
       comments?:  {
         __typename: "ModelCommentConnection",
         nextToken?: string | null,
       } | null,
-      subject:  {
-        __typename: "Subject",
-        id: string,
-        title: string,
-        createdAt: string,
-        updatedAt: string,
-      },
       users?:  {
         __typename: "ModelUserLibraryConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      subjectArticlesId?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1308,18 +777,6 @@ export type GetUserQuery = {
         id: string,
         articleID: string,
         userID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    subscribedSubjects?:  {
-      __typename: "ModelSubjectCatalogConnection",
-      items:  Array< {
-        __typename: "SubjectCatalog",
-        id: string,
-        userID: string,
-        subjectID: string,
         createdAt: string,
         updatedAt: string,
       } | null >,
@@ -1347,78 +804,6 @@ export type ListUsersQuery = {
         __typename: "ModelUserLibraryConnection",
         nextToken?: string | null,
       } | null,
-      subscribedSubjects?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetSubjectQueryVariables = {
-  id: string,
-};
-
-export type GetSubjectQuery = {
-  getSubject?:  {
-    __typename: "Subject",
-    id: string,
-    title: string,
-    articles?:  {
-      __typename: "ModelArticleConnection",
-      items:  Array< {
-        __typename: "Article",
-        id: string,
-        name: string,
-        arxivUrl: string,
-        date: string,
-        createdAt: string,
-        updatedAt: string,
-        subjectArticlesId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    subscribers?:  {
-      __typename: "ModelSubjectCatalogConnection",
-      items:  Array< {
-        __typename: "SubjectCatalog",
-        id: string,
-        userID: string,
-        subjectID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type ListSubjectsQueryVariables = {
-  filter?: ModelSubjectFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListSubjectsQuery = {
-  listSubjects?:  {
-    __typename: "ModelSubjectConnection",
-    items:  Array< {
-      __typename: "Subject",
-      id: string,
-      title: string,
-      articles?:  {
-        __typename: "ModelArticleConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribers?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -1438,26 +823,18 @@ export type GetCommentQuery = {
       __typename: "Article",
       id: string,
       name: string,
-      arxivUrl: string,
+      url: string,
       date: string,
       comments?:  {
         __typename: "ModelCommentConnection",
         nextToken?: string | null,
       } | null,
-      subject:  {
-        __typename: "Subject",
-        id: string,
-        title: string,
-        createdAt: string,
-        updatedAt: string,
-      },
       users?:  {
         __typename: "ModelUserLibraryConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      subjectArticlesId?: string | null,
     },
     content: string,
     createdAt: string,
@@ -1482,11 +859,10 @@ export type ListCommentsQuery = {
         __typename: "Article",
         id: string,
         name: string,
-        arxivUrl: string,
+        url: string,
         date: string,
         createdAt: string,
         updatedAt: string,
-        subjectArticlesId?: string | null,
       },
       content: string,
       createdAt: string,
@@ -1511,26 +887,18 @@ export type GetUserLibraryQuery = {
       __typename: "Article",
       id: string,
       name: string,
-      arxivUrl: string,
+      url: string,
       date: string,
       comments?:  {
         __typename: "ModelCommentConnection",
         nextToken?: string | null,
       } | null,
-      subject:  {
-        __typename: "Subject",
-        id: string,
-        title: string,
-        createdAt: string,
-        updatedAt: string,
-      },
       users?:  {
         __typename: "ModelUserLibraryConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      subjectArticlesId?: string | null,
     },
     user:  {
       __typename: "User",
@@ -1538,10 +906,6 @@ export type GetUserLibraryQuery = {
       name: string,
       savedArticles?:  {
         __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribedSubjects?:  {
-        __typename: "ModelSubjectCatalogConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -1570,96 +934,15 @@ export type ListUserLibrariesQuery = {
         __typename: "Article",
         id: string,
         name: string,
-        arxivUrl: string,
+        url: string,
         date: string,
         createdAt: string,
         updatedAt: string,
-        subjectArticlesId?: string | null,
       },
       user:  {
         __typename: "User",
         id: string,
         name: string,
-        createdAt: string,
-        updatedAt: string,
-      },
-      createdAt: string,
-      updatedAt: string,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetSubjectCatalogQueryVariables = {
-  id: string,
-};
-
-export type GetSubjectCatalogQuery = {
-  getSubjectCatalog?:  {
-    __typename: "SubjectCatalog",
-    id: string,
-    userID: string,
-    subjectID: string,
-    user:  {
-      __typename: "User",
-      id: string,
-      name: string,
-      savedArticles?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribedSubjects?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    subject:  {
-      __typename: "Subject",
-      id: string,
-      title: string,
-      articles?:  {
-        __typename: "ModelArticleConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribers?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type ListSubjectCatalogsQueryVariables = {
-  filter?: ModelSubjectCatalogFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListSubjectCatalogsQuery = {
-  listSubjectCatalogs?:  {
-    __typename: "ModelSubjectCatalogConnection",
-    items:  Array< {
-      __typename: "SubjectCatalog",
-      id: string,
-      userID: string,
-      subjectID: string,
-      user:  {
-        __typename: "User",
-        id: string,
-        name: string,
-        createdAt: string,
-        updatedAt: string,
-      },
-      subject:  {
-        __typename: "Subject",
-        id: string,
-        title: string,
         createdAt: string,
         updatedAt: string,
       },
@@ -1675,7 +958,7 @@ export type OnCreateArticleSubscription = {
     __typename: "Article",
     id: string,
     name: string,
-    arxivUrl: string,
+    url: string,
     date: string,
     comments?:  {
       __typename: "ModelCommentConnection",
@@ -1689,21 +972,6 @@ export type OnCreateArticleSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    subject:  {
-      __typename: "Subject",
-      id: string,
-      title: string,
-      articles?:  {
-        __typename: "ModelArticleConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribers?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     users?:  {
       __typename: "ModelUserLibraryConnection",
       items:  Array< {
@@ -1718,7 +986,6 @@ export type OnCreateArticleSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    subjectArticlesId?: string | null,
   } | null,
 };
 
@@ -1727,7 +994,7 @@ export type OnUpdateArticleSubscription = {
     __typename: "Article",
     id: string,
     name: string,
-    arxivUrl: string,
+    url: string,
     date: string,
     comments?:  {
       __typename: "ModelCommentConnection",
@@ -1741,21 +1008,6 @@ export type OnUpdateArticleSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    subject:  {
-      __typename: "Subject",
-      id: string,
-      title: string,
-      articles?:  {
-        __typename: "ModelArticleConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribers?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     users?:  {
       __typename: "ModelUserLibraryConnection",
       items:  Array< {
@@ -1770,7 +1022,6 @@ export type OnUpdateArticleSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    subjectArticlesId?: string | null,
   } | null,
 };
 
@@ -1779,7 +1030,7 @@ export type OnDeleteArticleSubscription = {
     __typename: "Article",
     id: string,
     name: string,
-    arxivUrl: string,
+    url: string,
     date: string,
     comments?:  {
       __typename: "ModelCommentConnection",
@@ -1793,21 +1044,6 @@ export type OnDeleteArticleSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    subject:  {
-      __typename: "Subject",
-      id: string,
-      title: string,
-      articles?:  {
-        __typename: "ModelArticleConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribers?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     users?:  {
       __typename: "ModelUserLibraryConnection",
       items:  Array< {
@@ -1822,7 +1058,6 @@ export type OnDeleteArticleSubscription = {
     } | null,
     createdAt: string,
     updatedAt: string,
-    subjectArticlesId?: string | null,
   } | null,
 };
 
@@ -1838,18 +1073,6 @@ export type OnCreateUserSubscription = {
         id: string,
         articleID: string,
         userID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    subscribedSubjects?:  {
-      __typename: "ModelSubjectCatalogConnection",
-      items:  Array< {
-        __typename: "SubjectCatalog",
-        id: string,
-        userID: string,
-        subjectID: string,
         createdAt: string,
         updatedAt: string,
       } | null >,
@@ -1877,18 +1100,6 @@ export type OnUpdateUserSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    subscribedSubjects?:  {
-      __typename: "ModelSubjectCatalogConnection",
-      items:  Array< {
-        __typename: "SubjectCatalog",
-        id: string,
-        userID: string,
-        subjectID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1911,126 +1122,6 @@ export type OnDeleteUserSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    subscribedSubjects?:  {
-      __typename: "ModelSubjectCatalogConnection",
-      items:  Array< {
-        __typename: "SubjectCatalog",
-        id: string,
-        userID: string,
-        subjectID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnCreateSubjectSubscription = {
-  onCreateSubject?:  {
-    __typename: "Subject",
-    id: string,
-    title: string,
-    articles?:  {
-      __typename: "ModelArticleConnection",
-      items:  Array< {
-        __typename: "Article",
-        id: string,
-        name: string,
-        arxivUrl: string,
-        date: string,
-        createdAt: string,
-        updatedAt: string,
-        subjectArticlesId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    subscribers?:  {
-      __typename: "ModelSubjectCatalogConnection",
-      items:  Array< {
-        __typename: "SubjectCatalog",
-        id: string,
-        userID: string,
-        subjectID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnUpdateSubjectSubscription = {
-  onUpdateSubject?:  {
-    __typename: "Subject",
-    id: string,
-    title: string,
-    articles?:  {
-      __typename: "ModelArticleConnection",
-      items:  Array< {
-        __typename: "Article",
-        id: string,
-        name: string,
-        arxivUrl: string,
-        date: string,
-        createdAt: string,
-        updatedAt: string,
-        subjectArticlesId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    subscribers?:  {
-      __typename: "ModelSubjectCatalogConnection",
-      items:  Array< {
-        __typename: "SubjectCatalog",
-        id: string,
-        userID: string,
-        subjectID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnDeleteSubjectSubscription = {
-  onDeleteSubject?:  {
-    __typename: "Subject",
-    id: string,
-    title: string,
-    articles?:  {
-      __typename: "ModelArticleConnection",
-      items:  Array< {
-        __typename: "Article",
-        id: string,
-        name: string,
-        arxivUrl: string,
-        date: string,
-        createdAt: string,
-        updatedAt: string,
-        subjectArticlesId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    subscribers?:  {
-      __typename: "ModelSubjectCatalogConnection",
-      items:  Array< {
-        __typename: "SubjectCatalog",
-        id: string,
-        userID: string,
-        subjectID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -2044,26 +1135,18 @@ export type OnCreateCommentSubscription = {
       __typename: "Article",
       id: string,
       name: string,
-      arxivUrl: string,
+      url: string,
       date: string,
       comments?:  {
         __typename: "ModelCommentConnection",
         nextToken?: string | null,
       } | null,
-      subject:  {
-        __typename: "Subject",
-        id: string,
-        title: string,
-        createdAt: string,
-        updatedAt: string,
-      },
       users?:  {
         __typename: "ModelUserLibraryConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      subjectArticlesId?: string | null,
     },
     content: string,
     createdAt: string,
@@ -2080,26 +1163,18 @@ export type OnUpdateCommentSubscription = {
       __typename: "Article",
       id: string,
       name: string,
-      arxivUrl: string,
+      url: string,
       date: string,
       comments?:  {
         __typename: "ModelCommentConnection",
         nextToken?: string | null,
       } | null,
-      subject:  {
-        __typename: "Subject",
-        id: string,
-        title: string,
-        createdAt: string,
-        updatedAt: string,
-      },
       users?:  {
         __typename: "ModelUserLibraryConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      subjectArticlesId?: string | null,
     },
     content: string,
     createdAt: string,
@@ -2116,26 +1191,18 @@ export type OnDeleteCommentSubscription = {
       __typename: "Article",
       id: string,
       name: string,
-      arxivUrl: string,
+      url: string,
       date: string,
       comments?:  {
         __typename: "ModelCommentConnection",
         nextToken?: string | null,
       } | null,
-      subject:  {
-        __typename: "Subject",
-        id: string,
-        title: string,
-        createdAt: string,
-        updatedAt: string,
-      },
       users?:  {
         __typename: "ModelUserLibraryConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      subjectArticlesId?: string | null,
     },
     content: string,
     createdAt: string,
@@ -2154,26 +1221,18 @@ export type OnCreateUserLibrarySubscription = {
       __typename: "Article",
       id: string,
       name: string,
-      arxivUrl: string,
+      url: string,
       date: string,
       comments?:  {
         __typename: "ModelCommentConnection",
         nextToken?: string | null,
       } | null,
-      subject:  {
-        __typename: "Subject",
-        id: string,
-        title: string,
-        createdAt: string,
-        updatedAt: string,
-      },
       users?:  {
         __typename: "ModelUserLibraryConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      subjectArticlesId?: string | null,
     },
     user:  {
       __typename: "User",
@@ -2181,10 +1240,6 @@ export type OnCreateUserLibrarySubscription = {
       name: string,
       savedArticles?:  {
         __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribedSubjects?:  {
-        __typename: "ModelSubjectCatalogConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -2205,26 +1260,18 @@ export type OnUpdateUserLibrarySubscription = {
       __typename: "Article",
       id: string,
       name: string,
-      arxivUrl: string,
+      url: string,
       date: string,
       comments?:  {
         __typename: "ModelCommentConnection",
         nextToken?: string | null,
       } | null,
-      subject:  {
-        __typename: "Subject",
-        id: string,
-        title: string,
-        createdAt: string,
-        updatedAt: string,
-      },
       users?:  {
         __typename: "ModelUserLibraryConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      subjectArticlesId?: string | null,
     },
     user:  {
       __typename: "User",
@@ -2232,10 +1279,6 @@ export type OnUpdateUserLibrarySubscription = {
       name: string,
       savedArticles?:  {
         __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribedSubjects?:  {
-        __typename: "ModelSubjectCatalogConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -2256,26 +1299,18 @@ export type OnDeleteUserLibrarySubscription = {
       __typename: "Article",
       id: string,
       name: string,
-      arxivUrl: string,
+      url: string,
       date: string,
       comments?:  {
         __typename: "ModelCommentConnection",
         nextToken?: string | null,
       } | null,
-      subject:  {
-        __typename: "Subject",
-        id: string,
-        title: string,
-        createdAt: string,
-        updatedAt: string,
-      },
       users?:  {
         __typename: "ModelUserLibraryConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
       updatedAt: string,
-      subjectArticlesId?: string | null,
     },
     user:  {
       __typename: "User",
@@ -2283,133 +1318,6 @@ export type OnDeleteUserLibrarySubscription = {
       name: string,
       savedArticles?:  {
         __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribedSubjects?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnCreateSubjectCatalogSubscription = {
-  onCreateSubjectCatalog?:  {
-    __typename: "SubjectCatalog",
-    id: string,
-    userID: string,
-    subjectID: string,
-    user:  {
-      __typename: "User",
-      id: string,
-      name: string,
-      savedArticles?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribedSubjects?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    subject:  {
-      __typename: "Subject",
-      id: string,
-      title: string,
-      articles?:  {
-        __typename: "ModelArticleConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribers?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnUpdateSubjectCatalogSubscription = {
-  onUpdateSubjectCatalog?:  {
-    __typename: "SubjectCatalog",
-    id: string,
-    userID: string,
-    subjectID: string,
-    user:  {
-      __typename: "User",
-      id: string,
-      name: string,
-      savedArticles?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribedSubjects?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    subject:  {
-      __typename: "Subject",
-      id: string,
-      title: string,
-      articles?:  {
-        __typename: "ModelArticleConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribers?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnDeleteSubjectCatalogSubscription = {
-  onDeleteSubjectCatalog?:  {
-    __typename: "SubjectCatalog",
-    id: string,
-    userID: string,
-    subjectID: string,
-    user:  {
-      __typename: "User",
-      id: string,
-      name: string,
-      savedArticles?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribedSubjects?:  {
-        __typename: "ModelSubjectCatalogConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    subject:  {
-      __typename: "Subject",
-      id: string,
-      title: string,
-      articles?:  {
-        __typename: "ModelArticleConnection",
-        nextToken?: string | null,
-      } | null,
-      subscribers?:  {
-        __typename: "ModelSubjectCatalogConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,

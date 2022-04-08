@@ -10,7 +10,7 @@ export const createArticle = /* GraphQL */ `
     createArticle(input: $input, condition: $condition) {
       id
       name
-      arxivUrl
+      url
       date
       comments {
         items {
@@ -21,18 +21,6 @@ export const createArticle = /* GraphQL */ `
           articleCommentsId
         }
         nextToken
-      }
-      subject {
-        id
-        title
-        articles {
-          nextToken
-        }
-        subscribers {
-          nextToken
-        }
-        createdAt
-        updatedAt
       }
       users {
         items {
@@ -46,7 +34,6 @@ export const createArticle = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      subjectArticlesId
     }
   }
 `;
@@ -58,7 +45,7 @@ export const updateArticle = /* GraphQL */ `
     updateArticle(input: $input, condition: $condition) {
       id
       name
-      arxivUrl
+      url
       date
       comments {
         items {
@@ -69,18 +56,6 @@ export const updateArticle = /* GraphQL */ `
           articleCommentsId
         }
         nextToken
-      }
-      subject {
-        id
-        title
-        articles {
-          nextToken
-        }
-        subscribers {
-          nextToken
-        }
-        createdAt
-        updatedAt
       }
       users {
         items {
@@ -94,7 +69,6 @@ export const updateArticle = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      subjectArticlesId
     }
   }
 `;
@@ -106,7 +80,7 @@ export const deleteArticle = /* GraphQL */ `
     deleteArticle(input: $input, condition: $condition) {
       id
       name
-      arxivUrl
+      url
       date
       comments {
         items {
@@ -117,18 +91,6 @@ export const deleteArticle = /* GraphQL */ `
           articleCommentsId
         }
         nextToken
-      }
-      subject {
-        id
-        title
-        articles {
-          nextToken
-        }
-        subscribers {
-          nextToken
-        }
-        createdAt
-        updatedAt
       }
       users {
         items {
@@ -142,7 +104,6 @@ export const deleteArticle = /* GraphQL */ `
       }
       createdAt
       updatedAt
-      subjectArticlesId
     }
   }
 `;
@@ -159,16 +120,6 @@ export const createUser = /* GraphQL */ `
           id
           articleID
           userID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      subscribedSubjects {
-        items {
-          id
-          userID
-          subjectID
           createdAt
           updatedAt
         }
@@ -197,16 +148,6 @@ export const updateUser = /* GraphQL */ `
         }
         nextToken
       }
-      subscribedSubjects {
-        items {
-          id
-          userID
-          subjectID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -230,121 +171,6 @@ export const deleteUser = /* GraphQL */ `
         }
         nextToken
       }
-      subscribedSubjects {
-        items {
-          id
-          userID
-          subjectID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createSubject = /* GraphQL */ `
-  mutation CreateSubject(
-    $input: CreateSubjectInput!
-    $condition: ModelSubjectConditionInput
-  ) {
-    createSubject(input: $input, condition: $condition) {
-      id
-      title
-      articles {
-        items {
-          id
-          name
-          arxivUrl
-          date
-          createdAt
-          updatedAt
-          subjectArticlesId
-        }
-        nextToken
-      }
-      subscribers {
-        items {
-          id
-          userID
-          subjectID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateSubject = /* GraphQL */ `
-  mutation UpdateSubject(
-    $input: UpdateSubjectInput!
-    $condition: ModelSubjectConditionInput
-  ) {
-    updateSubject(input: $input, condition: $condition) {
-      id
-      title
-      articles {
-        items {
-          id
-          name
-          arxivUrl
-          date
-          createdAt
-          updatedAt
-          subjectArticlesId
-        }
-        nextToken
-      }
-      subscribers {
-        items {
-          id
-          userID
-          subjectID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteSubject = /* GraphQL */ `
-  mutation DeleteSubject(
-    $input: DeleteSubjectInput!
-    $condition: ModelSubjectConditionInput
-  ) {
-    deleteSubject(input: $input, condition: $condition) {
-      id
-      title
-      articles {
-        items {
-          id
-          name
-          arxivUrl
-          date
-          createdAt
-          updatedAt
-          subjectArticlesId
-        }
-        nextToken
-      }
-      subscribers {
-        items {
-          id
-          userID
-          subjectID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -360,23 +186,16 @@ export const createComment = /* GraphQL */ `
       article {
         id
         name
-        arxivUrl
+        url
         date
         comments {
           nextToken
-        }
-        subject {
-          id
-          title
-          createdAt
-          updatedAt
         }
         users {
           nextToken
         }
         createdAt
         updatedAt
-        subjectArticlesId
       }
       content
       createdAt
@@ -395,23 +214,16 @@ export const updateComment = /* GraphQL */ `
       article {
         id
         name
-        arxivUrl
+        url
         date
         comments {
           nextToken
-        }
-        subject {
-          id
-          title
-          createdAt
-          updatedAt
         }
         users {
           nextToken
         }
         createdAt
         updatedAt
-        subjectArticlesId
       }
       content
       createdAt
@@ -430,23 +242,16 @@ export const deleteComment = /* GraphQL */ `
       article {
         id
         name
-        arxivUrl
+        url
         date
         comments {
           nextToken
-        }
-        subject {
-          id
-          title
-          createdAt
-          updatedAt
         }
         users {
           nextToken
         }
         createdAt
         updatedAt
-        subjectArticlesId
       }
       content
       createdAt
@@ -467,31 +272,21 @@ export const createUserLibrary = /* GraphQL */ `
       article {
         id
         name
-        arxivUrl
+        url
         date
         comments {
           nextToken
-        }
-        subject {
-          id
-          title
-          createdAt
-          updatedAt
         }
         users {
           nextToken
         }
         createdAt
         updatedAt
-        subjectArticlesId
       }
       user {
         id
         name
         savedArticles {
-          nextToken
-        }
-        subscribedSubjects {
           nextToken
         }
         createdAt
@@ -514,31 +309,21 @@ export const updateUserLibrary = /* GraphQL */ `
       article {
         id
         name
-        arxivUrl
+        url
         date
         comments {
           nextToken
-        }
-        subject {
-          id
-          title
-          createdAt
-          updatedAt
         }
         users {
           nextToken
         }
         createdAt
         updatedAt
-        subjectArticlesId
       }
       user {
         id
         name
         savedArticles {
-          nextToken
-        }
-        subscribedSubjects {
           nextToken
         }
         createdAt
@@ -561,145 +346,21 @@ export const deleteUserLibrary = /* GraphQL */ `
       article {
         id
         name
-        arxivUrl
+        url
         date
         comments {
           nextToken
-        }
-        subject {
-          id
-          title
-          createdAt
-          updatedAt
         }
         users {
           nextToken
         }
         createdAt
         updatedAt
-        subjectArticlesId
       }
       user {
         id
         name
         savedArticles {
-          nextToken
-        }
-        subscribedSubjects {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createSubjectCatalog = /* GraphQL */ `
-  mutation CreateSubjectCatalog(
-    $input: CreateSubjectCatalogInput!
-    $condition: ModelSubjectCatalogConditionInput
-  ) {
-    createSubjectCatalog(input: $input, condition: $condition) {
-      id
-      userID
-      subjectID
-      user {
-        id
-        name
-        savedArticles {
-          nextToken
-        }
-        subscribedSubjects {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      subject {
-        id
-        title
-        articles {
-          nextToken
-        }
-        subscribers {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateSubjectCatalog = /* GraphQL */ `
-  mutation UpdateSubjectCatalog(
-    $input: UpdateSubjectCatalogInput!
-    $condition: ModelSubjectCatalogConditionInput
-  ) {
-    updateSubjectCatalog(input: $input, condition: $condition) {
-      id
-      userID
-      subjectID
-      user {
-        id
-        name
-        savedArticles {
-          nextToken
-        }
-        subscribedSubjects {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      subject {
-        id
-        title
-        articles {
-          nextToken
-        }
-        subscribers {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteSubjectCatalog = /* GraphQL */ `
-  mutation DeleteSubjectCatalog(
-    $input: DeleteSubjectCatalogInput!
-    $condition: ModelSubjectCatalogConditionInput
-  ) {
-    deleteSubjectCatalog(input: $input, condition: $condition) {
-      id
-      userID
-      subjectID
-      user {
-        id
-        name
-        savedArticles {
-          nextToken
-        }
-        subscribedSubjects {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      subject {
-        id
-        title
-        articles {
-          nextToken
-        }
-        subscribers {
           nextToken
         }
         createdAt

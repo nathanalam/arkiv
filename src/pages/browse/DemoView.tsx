@@ -7,23 +7,15 @@ import { Article } from "../../API";
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
 
 const ArticleLoading = () => {
-  return <h4>Loading Article...</h4>;
+  return <p>Loading Article...</p>;
 };
 
 const ArticleRendered = ({ url }: { url: string }) => {
-  const [pageNum, setPageNum] = useState(0);
-  const onDocumentLoadSuccess = ({ numPages }: any) => {
-    setPageNum(numPages);
-  };
   return (
     <div>
-      <h4>Article Rendered!</h4>
-      <Document file={url} onLoadSuccess={onDocumentLoadSuccess}>
-        {[...Array(pageNum)].map((_, pageNumber) => (
-          <Page key={pageNumber} pageNumber={pageNumber + 1} />
-        ))}
+      <Document file={url}>
+        <Page pageNumber={1} />
       </Document>
-      <a href={url}>Here is the link!</a>
     </div>
   );
 };
@@ -38,20 +30,18 @@ const DemoView = (props: DemoViewProps) => {
   useEffect(() => {
     // declare the data fetching function
     const fetchPdf = async () => {
-      // const signedURL = await Storage.get("demo.pdf");
-      const article = (
-        (await API.graphql(
-          graphqlOperation(getArticle, { id: props.articleId })
-        )) as any
-      ).data.getArticle as Article;
-      setArticleContent(<ArticleRendered url={article.arxivUrl} />);
+      const response = await API.graphql(
+        graphqlOperation(getArticle, { id: props.articleId })
+      );
+      const article = (response as any).data.getArticle as Article;
+      setArticleContent(<ArticleRendered url={article.url} />);
     };
 
     // call the function
     fetchPdf()
-      // make sure to catch any error
+      // make sure to catch any errorg
       .catch(console.error);
-  }, []);
+  }, [props.articleId]);
   return <div>{articleContent}</div>;
 };
 

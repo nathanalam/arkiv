@@ -1,4 +1,4 @@
-import { Auth, API, graphqlOperation } from "aws-amplify";
+import { API, graphqlOperation } from "aws-amplify";
 import {
   DefaultButton,
   Dialog,
@@ -6,41 +6,21 @@ import {
   IconButton,
   PrimaryButton,
 } from "@fluentui/react";
-import { useEffect, useState } from "react";
-import {
-  createArticle,
-  createUserLibrary,
-  updateUser,
-} from "../graphql/mutations";
-import { Article, CreateArticleInput, Subject, User } from "../API";
+import { useState } from "react";
+import { createArticle, createUserLibrary } from "../graphql/mutations";
+import { CreateArticleInput, User } from "../API";
 import uuid from "react-uuid";
-import { listSubjects } from "../graphql/queries";
 
 interface AddArticleProps {
   user: User;
+  onAdd: (newArticleId: string) => void;
 }
 
 const AddArticle = (props: AddArticleProps) => {
   const [hideDialog, setHideDialog] = useState(true);
-  const [availableSubjects, setAvailableSubjects] = useState<Subject[]>([]);
-
-  useEffect(() => {
-    // declare the data fetching function
-    const fetchSubjects = async () => {
-      const subjects = await API.graphql(graphqlOperation(listSubjects));
-      setAvailableSubjects((subjects as any).data?.listSubjects.items);
-    };
-
-    // call the function
-    fetchSubjects()
-      // make sure to catch any error
-      .catch(console.error);
-  }, []);
 
   const [name, setName] = useState("");
-  const [date, setDate] = useState("");
-  const [arxivUrl, setArxivUrl] = useState("");
-  const [subject, setSubject] = useState<Subject | null>(null);
+  const [url, setUrl] = useState("");
 
   const addArticle = async (articleInput: CreateArticleInput) => {
     await API.graphql(graphqlOperation(createArticle, { input: articleInput }));
@@ -53,6 +33,7 @@ const AddArticle = (props: AddArticleProps) => {
         },
       })
     );
+    props.onAdd(articleInput.id || "");
   };
 
   return (
@@ -62,6 +43,7 @@ const AddArticle = (props: AddArticleProps) => {
         title="Add"
         ariaLabel="Add"
         onClick={() => setHideDialog(false)}
+        style={{ display: "inline-block" }}
       />
       <Dialog
         hidden={hideDialog}
@@ -79,45 +61,22 @@ const AddArticle = (props: AddArticleProps) => {
             placeholder="Article name"
           />
           <input
-            value={date}
-            onChange={({ target }) => setDate(target.value)}
-            placeholder="Date"
-          />
-          <input
-            value={arxivUrl}
-            onChange={({ target }) => setArxivUrl(target.value)}
+            value={url}
+            onChange={({ target }) => setUrl(target.value)}
             placeholder="Arxiv link"
           />
-          <input
-            value={subject?.title}
-            onChange={({ target }) => {
-              let foundSubject: Subject | null = null;
-              availableSubjects.forEach((subject) => {
-                if (subject.title === target.value) {
-                  foundSubject = subject;
-                }
-              });
-              setSubject(foundSubject);
-            }}
-            placeholder="Subject"
-          />
-          <button
-            onClick={() =>
-              addArticle({
-                id: uuid(),
-                name,
-                arxivUrl,
-                date,
-                subjectArticlesId: subject?.id || null,
-              })
-            }
-          >
-            Add Article
-          </button>
         </div>
         <DialogFooter>
           <PrimaryButton
             onClick={() => {
+              const newArticleId = uuid();
+              const time = new Date(Date.now()).toISOString();
+              addArticle({
+                id: newArticleId,
+                name,
+                url,
+                date: time.substring(0, time.indexOf("T")),
+              });
               setHideDialog(true);
             }}
             text="Add"
