@@ -13,15 +13,7 @@ const ArticleLoading = () => {
 const ArticleRendered = ({ url }: { url: string }) => {
   return (
     <div>
-      <Document
-        file={{
-          url,
-          httpHeaders: {
-            Origin: "https://main.d287qvsgysn418.amplifyapp.com/",
-            "Access-Control-Allow-Origin": '*'
-          },
-        }}
-      >
+      <Document file={url}>
         <Page pageNumber={1} />
       </Document>
     </div>
