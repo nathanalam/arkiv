@@ -22,6 +22,7 @@ const ArticleRendered = ({ url }: { url: string }) => {
           url,
           httpHeaders: {
             Origin: "https://main.d287qvsgysn418.amplifyapp.com/",
+            "Access-Control-Allow-Origin": '*'
           },
         }}
         onLoadSuccess={onDocumentLoadSuccess}
