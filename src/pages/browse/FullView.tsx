@@ -17,7 +17,15 @@ const ArticleRendered = ({ url }: { url: string }) => {
   };
   return (
     <div>
-      <Document file={url} onLoadSuccess={onDocumentLoadSuccess}>
+      <Document
+        file={{
+          url,
+          httpHeaders: {
+            Origin: "https://main.d287qvsgysn418.amplifyapp.com/",
+          },
+        }}
+        onLoadSuccess={onDocumentLoadSuccess}
+      >
         {[...Array(pageNum)].map((_, pageNumber) => (
           <Page key={pageNumber} pageNumber={pageNumber + 1} />
         ))}
