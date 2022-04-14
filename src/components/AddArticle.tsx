@@ -7,7 +7,7 @@ import {
   PrimaryButton,
 } from "@fluentui/react";
 import { useState } from "react";
-import { createArticle, createUserArticle } from "../graphql/mutations";
+import { createArticle, createUserArticle } from '../graphql/mutations';
 import { CreateArticleInput, User } from "../API";
 import uuid from "react-uuid";
 

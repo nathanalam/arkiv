@@ -59,8 +59,7 @@ const FullView = (props: FullViewProps) => {
         <div>
           <Document
             file={{
-              url: articleProps.url,
-              httpHeaders: {},
+              url: articleProps.url
             }}
             onLoadSuccess={({ numPages }) => setMaxPage(numPages)}
           >

@@ -1,9 +1,9 @@
 {
   "version": 1,
   "serviceConfiguration": {
-    "apiName": "arkiv",
+    "apiName": "alexandria",
     "serviceName": "AppSync",
-    "gqlSchemaPath": "E:\\Projects\\Arkiv\\arkiv\\amplify\\backend\\api\\arkiv\\schema.graphql",
+    "gqlSchemaPath": "E:\\Projects\\Arkiv\\arkiv\\amplify\\backend\\api\\alexandria\\schema.graphql",
     "defaultAuthType": {
       "mode": "API_KEY",
       "expirationTime": 7

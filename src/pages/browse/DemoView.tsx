@@ -13,7 +13,12 @@ const ArticleLoading = () => {
 const ArticleRendered = ({ url }: { url: string }) => {
   return (
     <div>
-      <Document file={url}>
+      <Document file={{
+        url,
+        httpHeaders: {
+          "Access-Control-Allow-Origin": '*'
+        }
+      }}>
         <Page pageNumber={1} />
       </Document>
     </div>
