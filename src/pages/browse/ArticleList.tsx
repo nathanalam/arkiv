@@ -62,7 +62,7 @@ const ArticleList = (props: ArticleListProps) => {
                 style={{ display: "inline-block" }}
               />
               <a href={`/articles?id=${userArticle.id}`} className="image">
-                <DemoView articleId={userArticle.articleId || ""} />
+                <DemoView userArticleId={userArticle.id || ""} />
               </a>
             </article>
           );

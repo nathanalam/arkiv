@@ -57,15 +57,6 @@ const FullView = (props: FullViewProps) => {
     <>
       {articleProps.url ? (
         <div>
-          <Document
-            file={{
-              url: articleProps.url
-            }}
-            onLoadSuccess={({ numPages }) => setMaxPage(numPages)}
-          >
-            <Page key={articleProps.page} pageNumber={articleProps.page} />
-          </Document>
-          <a href={articleProps.url}>Here is the link!</a>
           <button
             onClick={() => {
               if (articleProps.page && articleProps.page > 1) {
@@ -96,6 +87,18 @@ const FullView = (props: FullViewProps) => {
           >
             Next
           </button>
+          <Document
+            file={{
+              url:
+                articleProps.url.charAt(articleProps.url.length - 1) === "/"
+                  ? articleProps.url
+                  : articleProps.url + "/",
+            }}
+            onLoadSuccess={({ numPages }) => setMaxPage(numPages)}
+          >
+            <Page key={articleProps.page} pageNumber={articleProps.page} />
+          </Document>
+          <a href={articleProps.url}>Here is the link!</a>
         </div>
       ) : (
         <h4>Loading Article...</h4>
