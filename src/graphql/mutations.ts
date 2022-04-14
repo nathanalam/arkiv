@@ -12,26 +12,6 @@ export const createArticle = /* GraphQL */ `
       name
       url
       date
-      comments {
-        items {
-          id
-          content
-          createdAt
-          updatedAt
-          articleCommentsId
-        }
-        nextToken
-      }
-      users {
-        items {
-          id
-          articleID
-          userID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -47,26 +27,6 @@ export const updateArticle = /* GraphQL */ `
       name
       url
       date
-      comments {
-        items {
-          id
-          content
-          createdAt
-          updatedAt
-          articleCommentsId
-        }
-        nextToken
-      }
-      users {
-        items {
-          id
-          articleID
-          userID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -82,26 +42,6 @@ export const deleteArticle = /* GraphQL */ `
       name
       url
       date
-      comments {
-        items {
-          id
-          content
-          createdAt
-          updatedAt
-          articleCommentsId
-        }
-        nextToken
-      }
-      users {
-        items {
-          id
-          articleID
-          userID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -115,16 +55,6 @@ export const createUser = /* GraphQL */ `
     createUser(input: $input, condition: $condition) {
       id
       name
-      savedArticles {
-        items {
-          id
-          articleID
-          userID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -138,16 +68,6 @@ export const updateUser = /* GraphQL */ `
     updateUser(input: $input, condition: $condition) {
       id
       name
-      savedArticles {
-        items {
-          id
-          articleID
-          userID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -161,16 +81,51 @@ export const deleteUser = /* GraphQL */ `
     deleteUser(input: $input, condition: $condition) {
       id
       name
-      savedArticles {
-        items {
-          id
-          articleID
-          userID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createUserArticle = /* GraphQL */ `
+  mutation CreateUserArticle(
+    $input: CreateUserArticleInput!
+    $condition: ModelUserArticleConditionInput
+  ) {
+    createUserArticle(input: $input, condition: $condition) {
+      articleId
+      userId
+      page
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateUserArticle = /* GraphQL */ `
+  mutation UpdateUserArticle(
+    $input: UpdateUserArticleInput!
+    $condition: ModelUserArticleConditionInput
+  ) {
+    updateUserArticle(input: $input, condition: $condition) {
+      articleId
+      userId
+      page
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteUserArticle = /* GraphQL */ `
+  mutation DeleteUserArticle(
+    $input: DeleteUserArticleInput!
+    $condition: ModelUserArticleConditionInput
+  ) {
+    deleteUserArticle(input: $input, condition: $condition) {
+      articleId
+      userId
+      page
+      id
       createdAt
       updatedAt
     }
@@ -183,24 +138,10 @@ export const createComment = /* GraphQL */ `
   ) {
     createComment(input: $input, condition: $condition) {
       id
-      article {
-        id
-        name
-        url
-        date
-        comments {
-          nextToken
-        }
-        users {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
+      articleId
       content
       createdAt
       updatedAt
-      articleCommentsId
     }
   }
 `;
@@ -211,24 +152,10 @@ export const updateComment = /* GraphQL */ `
   ) {
     updateComment(input: $input, condition: $condition) {
       id
-      article {
-        id
-        name
-        url
-        date
-        comments {
-          nextToken
-        }
-        users {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
+      articleId
       content
       createdAt
       updatedAt
-      articleCommentsId
     }
   }
 `;
@@ -239,133 +166,8 @@ export const deleteComment = /* GraphQL */ `
   ) {
     deleteComment(input: $input, condition: $condition) {
       id
-      article {
-        id
-        name
-        url
-        date
-        comments {
-          nextToken
-        }
-        users {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
+      articleId
       content
-      createdAt
-      updatedAt
-      articleCommentsId
-    }
-  }
-`;
-export const createUserLibrary = /* GraphQL */ `
-  mutation CreateUserLibrary(
-    $input: CreateUserLibraryInput!
-    $condition: ModelUserLibraryConditionInput
-  ) {
-    createUserLibrary(input: $input, condition: $condition) {
-      id
-      articleID
-      userID
-      article {
-        id
-        name
-        url
-        date
-        comments {
-          nextToken
-        }
-        users {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      user {
-        id
-        name
-        savedArticles {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateUserLibrary = /* GraphQL */ `
-  mutation UpdateUserLibrary(
-    $input: UpdateUserLibraryInput!
-    $condition: ModelUserLibraryConditionInput
-  ) {
-    updateUserLibrary(input: $input, condition: $condition) {
-      id
-      articleID
-      userID
-      article {
-        id
-        name
-        url
-        date
-        comments {
-          nextToken
-        }
-        users {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      user {
-        id
-        name
-        savedArticles {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteUserLibrary = /* GraphQL */ `
-  mutation DeleteUserLibrary(
-    $input: DeleteUserLibraryInput!
-    $condition: ModelUserLibraryConditionInput
-  ) {
-    deleteUserLibrary(input: $input, condition: $condition) {
-      id
-      articleID
-      userID
-      article {
-        id
-        name
-        url
-        date
-        comments {
-          nextToken
-        }
-        users {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      user {
-        id
-        name
-        savedArticles {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
       createdAt
       updatedAt
     }

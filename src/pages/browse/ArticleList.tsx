@@ -1,27 +1,48 @@
 import { IconButton } from "@fluentui/react";
 import { API, graphqlOperation } from "aws-amplify";
-import { useState } from "react";
-import { User } from "../../API";
+import { useEffect, useState } from "react";
+import { User, UserArticle } from "../../API";
 import AddArticle from "../../components/AddArticle";
-import { deleteUserLibrary } from "../../graphql/mutations";
+import { deleteUserArticle } from "../../graphql/mutations";
+import { listUserArticles } from "../../graphql/queries";
 import DemoView from "./DemoView";
 
 interface ArticleListProps {
   user: User;
 }
 
+const fetchUserArticles = async (
+  userid: string,
+  callbackFunction: (newUserArticles: UserArticle[]) => void
+) => {
+  const result = (
+    (await API.graphql(
+      graphqlOperation(listUserArticles, {
+        filter: {
+          userId: {
+            eq: userid,
+          },
+        },
+      })
+    )) as any
+  ).data?.listUserArticles.items;
+  callbackFunction(result);
+};
+
 const ArticleList = (props: ArticleListProps) => {
-  const [articleIds, setArticleIds] = useState(
-    props.user.savedArticles
-      ? props.user.savedArticles.items.map(
-          (userlibrary) => userlibrary?.articleID
-        )
-      : []
-  );
+  const [userArticles, setUserArticles] = useState<UserArticle[]>([]);
+  useEffect(() => {
+    // declare the data fetching function
+    // call the function
+    fetchUserArticles(props.user.id, setUserArticles)
+      // make sure to catch any error
+      .catch(console.error);
+  }, [props.user]);
+
   return (
     <div className="mini-posts">
-      {articleIds ? (
-        articleIds.map((articleid) => {
+      {userArticles.length ? (
+        userArticles.map((userArticle) => {
           return (
             <article>
               <IconButton
@@ -29,22 +50,19 @@ const ArticleList = (props: ArticleListProps) => {
                 title="Delete"
                 ariaLabel="Delete"
                 onClick={() => {
-                  props.user.savedArticles?.items.forEach((userLibrary) => {
-                    if (userLibrary && userLibrary.articleID === articleid)
-                      API.graphql(
-                        graphqlOperation(deleteUserLibrary, {
-                          input: {
-                            id: userLibrary.id,
-                          },
-                        })
-                      );
-                  });
-                  setArticleIds(articleIds.filter((oid) => oid !== articleid));
+                  API.graphql(
+                    graphqlOperation(deleteUserArticle, {
+                      input: {
+                        id: userArticle.id,
+                      },
+                    })
+                  );
+                  fetchUserArticles(props.user.id, setUserArticles);
                 }}
                 style={{ display: "inline-block" }}
               />
-              <a href={`/articles?id=${articleid}`} className="image">
-                <DemoView articleId={articleid || ""} />
+              <a href={`/articles?id=${userArticle.id}`} className="image">
+                <DemoView articleId={userArticle.articleId || ""} />
               </a>
             </article>
           );
@@ -54,7 +72,7 @@ const ArticleList = (props: ArticleListProps) => {
       )}
       <AddArticle
         user={props.user}
-        onAdd={(newArticleId) => setArticleIds([...articleIds, newArticleId])}
+        onAdd={() => fetchUserArticles(props.user.id, setUserArticles)}
       />
     </div>
   );

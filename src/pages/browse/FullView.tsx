@@ -1,61 +1,108 @@
 import { API, graphqlOperation } from "aws-amplify";
 import { Document, Page, pdfjs } from "react-pdf";
 import { useEffect, useState } from "react";
-import { getArticle } from "../../graphql/queries";
-import { Article } from "../../API";
+import { getArticle, getUserArticle } from "../../graphql/queries";
+import { Article, UserArticle } from "../../API";
+import { updateUserArticle } from "../../graphql/mutations";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/legacy/build/pdf.worker.min.js`;
 
-const ArticleLoading = () => {
-  return <h4>Loading Article...</h4>;
+const changeUserArticlePage = async (
+  userArticleId: string,
+  newPage: number,
+  callback: () => void
+) => {
+  await API.graphql(
+    graphqlOperation(updateUserArticle, {
+      input: {
+        id: userArticleId,
+        page: newPage,
+      },
+    })
+  );
+  callback();
 };
 
-const ArticleRendered = ({ url }: { url: string }) => {
-  const [pageNum, setPageNum] = useState(0);
-  const onDocumentLoadSuccess = ({ numPages }: any) => {
-    setPageNum(numPages);
-  };
-  return (
-    <div>
-      <Document
-        file={{
-          url,
-          httpHeaders: {}
-        }}
-        onLoadSuccess={onDocumentLoadSuccess}
-      >
-        {[...Array(pageNum)].map((_, pageNumber) => (
-          <Page key={pageNumber} pageNumber={pageNumber + 1} />
-        ))}
-      </Document>
-      <a href={url}>Here is the link!</a>
-    </div>
+const fetchPdf = async (
+  userArticleId: string,
+  callbackFunction: (articleProps: ArticleProps) => void
+) => {
+  let response;
+  response = await API.graphql(
+    graphqlOperation(getUserArticle, { id: userArticleId })
   );
+  const userArticle = (response as any).data.getUserArticle as UserArticle;
+  response = await API.graphql(
+    graphqlOperation(getArticle, { id: userArticle.articleId })
+  );
+  const article = (response as any).data.getArticle as Article;
+  callbackFunction({ url: article.url, page: userArticle.page });
 };
 
 interface FullViewProps {
-  articleId: string;
+  userArticleId: string;
+}
+interface ArticleProps {
+  url?: string;
+  page?: number;
 }
 
 const FullView = (props: FullViewProps) => {
-  const [articleContent, setArticleContent] = useState(<ArticleLoading />);
-  // get key from Storage.list;
+  const [maxPage, setMaxPage] = useState(10);
+  const [articleProps, setArticleProps] = useState<ArticleProps>({});
   useEffect(() => {
-    // declare the data fetching function
-    const fetchPdf = async () => {
-      const response = await API.graphql(
-        graphqlOperation(getArticle, { id: props.articleId })
-      );
-      const article = (response as any).data.getArticle as Article;
-      setArticleContent(<ArticleRendered url={article.url} />);
-    };
-
-    // call the function
-    fetchPdf()
-      // make sure to catch any errorg
-      .catch(console.error);
-  }, [props.articleId]);
-  return <div>{articleContent}</div>;
+    fetchPdf(props.userArticleId, setArticleProps);
+  }, [props.userArticleId]);
+  return (
+    <>
+      {articleProps.url ? (
+        <div>
+          <Document
+            file={{
+              url: articleProps.url,
+              httpHeaders: {},
+            }}
+            onLoadSuccess={({ numPages }) => setMaxPage(numPages)}
+          >
+            <Page key={articleProps.page} pageNumber={articleProps.page} />
+          </Document>
+          <a href={articleProps.url}>Here is the link!</a>
+          <button
+            onClick={() => {
+              if (articleProps.page && articleProps.page > 1) {
+                changeUserArticlePage(
+                  props.userArticleId,
+                  articleProps.page - 1,
+                  () => {
+                    fetchPdf(props.userArticleId, setArticleProps);
+                  }
+                );
+              }
+            }}
+          >
+            Previous
+          </button>
+          <button
+            onClick={() => {
+              if (articleProps.page && articleProps.page < maxPage) {
+                changeUserArticlePage(
+                  props.userArticleId,
+                  articleProps.page + 1,
+                  () => {
+                    fetchPdf(props.userArticleId, setArticleProps);
+                  }
+                );
+              }
+            }}
+          >
+            Next
+          </button>
+        </div>
+      ) : (
+        <h4>Loading Article...</h4>
+      )}
+    </>
+  );
 };
 
 export default FullView;

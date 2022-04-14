@@ -7,18 +7,21 @@ type Article @model {
   name: String!
   url: String!
   date: AWSDate!
-  comments: [Comment] @hasMany
-  users: [User] @manyToMany(relationName: "UserLibrary")
 }
 
 type User @model {
   id: ID!
   name: String!
-  savedArticles: [Article] @manyToMany(relationName: "UserLibrary")
+}
+
+type UserArticle @model {
+  articleId: String!
+  userId: String!
+  page: Int!
 }
 
 type Comment @model {
   id: ID!
-  article: Article! @belongsTo
+  articleId: String!
   content: String!
 }

@@ -9,26 +9,6 @@ export const getArticle = /* GraphQL */ `
       name
       url
       date
-      comments {
-        items {
-          id
-          content
-          createdAt
-          updatedAt
-          articleCommentsId
-        }
-        nextToken
-      }
-      users {
-        items {
-          id
-          articleID
-          userID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -46,12 +26,6 @@ export const listArticles = /* GraphQL */ `
         name
         url
         date
-        comments {
-          nextToken
-        }
-        users {
-          nextToken
-        }
         createdAt
         updatedAt
       }
@@ -64,16 +38,6 @@ export const getUser = /* GraphQL */ `
     getUser(id: $id) {
       id
       name
-      savedArticles {
-        items {
-          id
-          articleID
-          userID
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -89,9 +53,37 @@ export const listUsers = /* GraphQL */ `
       items {
         id
         name
-        savedArticles {
-          nextToken
-        }
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;
+export const getUserArticle = /* GraphQL */ `
+  query GetUserArticle($id: ID!) {
+    getUserArticle(id: $id) {
+      articleId
+      userId
+      page
+      id
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listUserArticles = /* GraphQL */ `
+  query ListUserArticles(
+    $filter: ModelUserArticleFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserArticles(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        articleId
+        userId
+        page
+        id
         createdAt
         updatedAt
       }
@@ -103,24 +95,10 @@ export const getComment = /* GraphQL */ `
   query GetComment($id: ID!) {
     getComment(id: $id) {
       id
-      article {
-        id
-        name
-        url
-        date
-        comments {
-          nextToken
-        }
-        users {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
+      articleId
       content
       createdAt
       updatedAt
-      articleCommentsId
     }
   }
 `;
@@ -133,82 +111,8 @@ export const listComments = /* GraphQL */ `
     listComments(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        article {
-          id
-          name
-          url
-          date
-          createdAt
-          updatedAt
-        }
+        articleId
         content
-        createdAt
-        updatedAt
-        articleCommentsId
-      }
-      nextToken
-    }
-  }
-`;
-export const getUserLibrary = /* GraphQL */ `
-  query GetUserLibrary($id: ID!) {
-    getUserLibrary(id: $id) {
-      id
-      articleID
-      userID
-      article {
-        id
-        name
-        url
-        date
-        comments {
-          nextToken
-        }
-        users {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      user {
-        id
-        name
-        savedArticles {
-          nextToken
-        }
-        createdAt
-        updatedAt
-      }
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listUserLibraries = /* GraphQL */ `
-  query ListUserLibraries(
-    $filter: ModelUserLibraryFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listUserLibraries(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        articleID
-        userID
-        article {
-          id
-          name
-          url
-          date
-          createdAt
-          updatedAt
-        }
-        user {
-          id
-          name
-          createdAt
-          updatedAt
-        }
         createdAt
         updatedAt
       }

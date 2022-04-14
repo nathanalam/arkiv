@@ -7,7 +7,7 @@ import {
   PrimaryButton,
 } from "@fluentui/react";
 import { useState } from "react";
-import { createArticle, createUserLibrary } from "../graphql/mutations";
+import { createArticle, createUserArticle } from "../graphql/mutations";
 import { CreateArticleInput, User } from "../API";
 import uuid from "react-uuid";
 
@@ -25,10 +25,11 @@ const AddArticle = (props: AddArticleProps) => {
   const addArticle = async (articleInput: CreateArticleInput) => {
     await API.graphql(graphqlOperation(createArticle, { input: articleInput }));
     await API.graphql(
-      graphqlOperation(createUserLibrary, {
+      graphqlOperation(createUserArticle, {
         input: {
-          articleID: articleInput.id,
-          userID: props.user.id,
+          articleId: articleInput.id,
+          userId: props.user.id,
+          page: 1,
           id: uuid(),
         },
       })

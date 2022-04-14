@@ -12,7 +12,7 @@ const ArticleViewer = (props: ArticleViewerProps) => {
   return (
     <PageWrapper user={props.user}>
       <>
-        <FullView articleId={searchParams.get("id") || ""}></FullView>
+        <FullView userArticleId={searchParams.get("id") || ""}></FullView>
       </>
     </PageWrapper>
   );

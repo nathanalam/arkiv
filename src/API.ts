@@ -64,50 +64,6 @@ export type Article = {
   name: string,
   url: string,
   date: string,
-  comments?: ModelCommentConnection | null,
-  users?: ModelUserLibraryConnection | null,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type ModelCommentConnection = {
-  __typename: "ModelCommentConnection",
-  items:  Array<Comment | null >,
-  nextToken?: string | null,
-};
-
-export type Comment = {
-  __typename: "Comment",
-  id: string,
-  article: Article,
-  content: string,
-  createdAt: string,
-  updatedAt: string,
-  articleCommentsId?: string | null,
-};
-
-export type ModelUserLibraryConnection = {
-  __typename: "ModelUserLibraryConnection",
-  items:  Array<UserLibrary | null >,
-  nextToken?: string | null,
-};
-
-export type UserLibrary = {
-  __typename: "UserLibrary",
-  id: string,
-  articleID: string,
-  userID: string,
-  article: Article,
-  user: User,
-  createdAt: string,
-  updatedAt: string,
-};
-
-export type User = {
-  __typename: "User",
-  id: string,
-  name: string,
-  savedArticles?: ModelUserLibraryConnection | null,
   createdAt: string,
   updatedAt: string,
 };
@@ -135,6 +91,14 @@ export type ModelUserConditionInput = {
   not?: ModelUserConditionInput | null,
 };
 
+export type User = {
+  __typename: "User",
+  id: string,
+  name: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
 export type UpdateUserInput = {
   id: string,
   name?: string | null,
@@ -144,18 +108,96 @@ export type DeleteUserInput = {
   id: string,
 };
 
+export type CreateUserArticleInput = {
+  articleId: string,
+  userId: string,
+  page: number,
+  id?: string | null,
+};
+
+export type ModelUserArticleConditionInput = {
+  articleId?: ModelStringInput | null,
+  userId?: ModelStringInput | null,
+  page?: ModelIntInput | null,
+  and?: Array< ModelUserArticleConditionInput | null > | null,
+  or?: Array< ModelUserArticleConditionInput | null > | null,
+  not?: ModelUserArticleConditionInput | null,
+};
+
+export type ModelIntInput = {
+  ne?: number | null,
+  eq?: number | null,
+  le?: number | null,
+  lt?: number | null,
+  ge?: number | null,
+  gt?: number | null,
+  between?: Array< number | null > | null,
+  attributeExists?: boolean | null,
+  attributeType?: ModelAttributeTypes | null,
+};
+
+export type UserArticle = {
+  __typename: "UserArticle",
+  articleId: string,
+  userId: string,
+  page: number,
+  id: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type UpdateUserArticleInput = {
+  articleId?: string | null,
+  userId?: string | null,
+  page?: number | null,
+  id: string,
+};
+
+export type DeleteUserArticleInput = {
+  id: string,
+};
+
 export type CreateCommentInput = {
   id?: string | null,
+  articleId: string,
   content: string,
-  articleCommentsId?: string | null,
 };
 
 export type ModelCommentConditionInput = {
+  articleId?: ModelStringInput | null,
   content?: ModelStringInput | null,
   and?: Array< ModelCommentConditionInput | null > | null,
   or?: Array< ModelCommentConditionInput | null > | null,
   not?: ModelCommentConditionInput | null,
-  articleCommentsId?: ModelIDInput | null,
+};
+
+export type Comment = {
+  __typename: "Comment",
+  id: string,
+  articleId: string,
+  content: string,
+  createdAt: string,
+  updatedAt: string,
+};
+
+export type UpdateCommentInput = {
+  id: string,
+  articleId?: string | null,
+  content?: string | null,
+};
+
+export type DeleteCommentInput = {
+  id: string,
+};
+
+export type ModelArticleFilterInput = {
+  id?: ModelIDInput | null,
+  name?: ModelStringInput | null,
+  url?: ModelStringInput | null,
+  date?: ModelStringInput | null,
+  and?: Array< ModelArticleFilterInput | null > | null,
+  or?: Array< ModelArticleFilterInput | null > | null,
+  not?: ModelArticleFilterInput | null,
 };
 
 export type ModelIDInput = {
@@ -172,50 +214,6 @@ export type ModelIDInput = {
   attributeExists?: boolean | null,
   attributeType?: ModelAttributeTypes | null,
   size?: ModelSizeInput | null,
-};
-
-export type UpdateCommentInput = {
-  id: string,
-  content?: string | null,
-  articleCommentsId?: string | null,
-};
-
-export type DeleteCommentInput = {
-  id: string,
-};
-
-export type CreateUserLibraryInput = {
-  id?: string | null,
-  articleID: string,
-  userID: string,
-};
-
-export type ModelUserLibraryConditionInput = {
-  articleID?: ModelIDInput | null,
-  userID?: ModelIDInput | null,
-  and?: Array< ModelUserLibraryConditionInput | null > | null,
-  or?: Array< ModelUserLibraryConditionInput | null > | null,
-  not?: ModelUserLibraryConditionInput | null,
-};
-
-export type UpdateUserLibraryInput = {
-  id: string,
-  articleID?: string | null,
-  userID?: string | null,
-};
-
-export type DeleteUserLibraryInput = {
-  id: string,
-};
-
-export type ModelArticleFilterInput = {
-  id?: ModelIDInput | null,
-  name?: ModelStringInput | null,
-  url?: ModelStringInput | null,
-  date?: ModelStringInput | null,
-  and?: Array< ModelArticleFilterInput | null > | null,
-  or?: Array< ModelArticleFilterInput | null > | null,
-  not?: ModelArticleFilterInput | null,
 };
 
 export type ModelArticleConnection = {
@@ -238,22 +236,34 @@ export type ModelUserConnection = {
   nextToken?: string | null,
 };
 
+export type ModelUserArticleFilterInput = {
+  articleId?: ModelStringInput | null,
+  userId?: ModelStringInput | null,
+  page?: ModelIntInput | null,
+  and?: Array< ModelUserArticleFilterInput | null > | null,
+  or?: Array< ModelUserArticleFilterInput | null > | null,
+  not?: ModelUserArticleFilterInput | null,
+};
+
+export type ModelUserArticleConnection = {
+  __typename: "ModelUserArticleConnection",
+  items:  Array<UserArticle | null >,
+  nextToken?: string | null,
+};
+
 export type ModelCommentFilterInput = {
   id?: ModelIDInput | null,
+  articleId?: ModelStringInput | null,
   content?: ModelStringInput | null,
   and?: Array< ModelCommentFilterInput | null > | null,
   or?: Array< ModelCommentFilterInput | null > | null,
   not?: ModelCommentFilterInput | null,
-  articleCommentsId?: ModelIDInput | null,
 };
 
-export type ModelUserLibraryFilterInput = {
-  id?: ModelIDInput | null,
-  articleID?: ModelIDInput | null,
-  userID?: ModelIDInput | null,
-  and?: Array< ModelUserLibraryFilterInput | null > | null,
-  or?: Array< ModelUserLibraryFilterInput | null > | null,
-  not?: ModelUserLibraryFilterInput | null,
+export type ModelCommentConnection = {
+  __typename: "ModelCommentConnection",
+  items:  Array<Comment | null >,
+  nextToken?: string | null,
 };
 
 export type CreateArticleMutationVariables = {
@@ -268,30 +278,6 @@ export type CreateArticleMutation = {
     name: string,
     url: string,
     date: string,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items:  Array< {
-        __typename: "Comment",
-        id: string,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-        articleCommentsId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    users?:  {
-      __typename: "ModelUserLibraryConnection",
-      items:  Array< {
-        __typename: "UserLibrary",
-        id: string,
-        articleID: string,
-        userID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -309,30 +295,6 @@ export type UpdateArticleMutation = {
     name: string,
     url: string,
     date: string,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items:  Array< {
-        __typename: "Comment",
-        id: string,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-        articleCommentsId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    users?:  {
-      __typename: "ModelUserLibraryConnection",
-      items:  Array< {
-        __typename: "UserLibrary",
-        id: string,
-        articleID: string,
-        userID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -350,30 +312,6 @@ export type DeleteArticleMutation = {
     name: string,
     url: string,
     date: string,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items:  Array< {
-        __typename: "Comment",
-        id: string,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-        articleCommentsId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    users?:  {
-      __typename: "ModelUserLibraryConnection",
-      items:  Array< {
-        __typename: "UserLibrary",
-        id: string,
-        articleID: string,
-        userID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -389,18 +327,6 @@ export type CreateUserMutation = {
     __typename: "User",
     id: string,
     name: string,
-    savedArticles?:  {
-      __typename: "ModelUserLibraryConnection",
-      items:  Array< {
-        __typename: "UserLibrary",
-        id: string,
-        articleID: string,
-        userID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -416,18 +342,6 @@ export type UpdateUserMutation = {
     __typename: "User",
     id: string,
     name: string,
-    savedArticles?:  {
-      __typename: "ModelUserLibraryConnection",
-      items:  Array< {
-        __typename: "UserLibrary",
-        id: string,
-        articleID: string,
-        userID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -443,18 +357,57 @@ export type DeleteUserMutation = {
     __typename: "User",
     id: string,
     name: string,
-    savedArticles?:  {
-      __typename: "ModelUserLibraryConnection",
-      items:  Array< {
-        __typename: "UserLibrary",
-        id: string,
-        articleID: string,
-        userID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type CreateUserArticleMutationVariables = {
+  input: CreateUserArticleInput,
+  condition?: ModelUserArticleConditionInput | null,
+};
+
+export type CreateUserArticleMutation = {
+  createUserArticle?:  {
+    __typename: "UserArticle",
+    articleId: string,
+    userId: string,
+    page: number,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type UpdateUserArticleMutationVariables = {
+  input: UpdateUserArticleInput,
+  condition?: ModelUserArticleConditionInput | null,
+};
+
+export type UpdateUserArticleMutation = {
+  updateUserArticle?:  {
+    __typename: "UserArticle",
+    articleId: string,
+    userId: string,
+    page: number,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type DeleteUserArticleMutationVariables = {
+  input: DeleteUserArticleInput,
+  condition?: ModelUserArticleConditionInput | null,
+};
+
+export type DeleteUserArticleMutation = {
+  deleteUserArticle?:  {
+    __typename: "UserArticle",
+    articleId: string,
+    userId: string,
+    page: number,
+    id: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -469,27 +422,10 @@ export type CreateCommentMutation = {
   createComment?:  {
     __typename: "Comment",
     id: string,
-    article:  {
-      __typename: "Article",
-      id: string,
-      name: string,
-      url: string,
-      date: string,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        nextToken?: string | null,
-      } | null,
-      users?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
+    articleId: string,
     content: string,
     createdAt: string,
     updatedAt: string,
-    articleCommentsId?: string | null,
   } | null,
 };
 
@@ -502,27 +438,10 @@ export type UpdateCommentMutation = {
   updateComment?:  {
     __typename: "Comment",
     id: string,
-    article:  {
-      __typename: "Article",
-      id: string,
-      name: string,
-      url: string,
-      date: string,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        nextToken?: string | null,
-      } | null,
-      users?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
+    articleId: string,
     content: string,
     createdAt: string,
     updatedAt: string,
-    articleCommentsId?: string | null,
   } | null,
 };
 
@@ -535,157 +454,8 @@ export type DeleteCommentMutation = {
   deleteComment?:  {
     __typename: "Comment",
     id: string,
-    article:  {
-      __typename: "Article",
-      id: string,
-      name: string,
-      url: string,
-      date: string,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        nextToken?: string | null,
-      } | null,
-      users?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
+    articleId: string,
     content: string,
-    createdAt: string,
-    updatedAt: string,
-    articleCommentsId?: string | null,
-  } | null,
-};
-
-export type CreateUserLibraryMutationVariables = {
-  input: CreateUserLibraryInput,
-  condition?: ModelUserLibraryConditionInput | null,
-};
-
-export type CreateUserLibraryMutation = {
-  createUserLibrary?:  {
-    __typename: "UserLibrary",
-    id: string,
-    articleID: string,
-    userID: string,
-    article:  {
-      __typename: "Article",
-      id: string,
-      name: string,
-      url: string,
-      date: string,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        nextToken?: string | null,
-      } | null,
-      users?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    user:  {
-      __typename: "User",
-      id: string,
-      name: string,
-      savedArticles?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type UpdateUserLibraryMutationVariables = {
-  input: UpdateUserLibraryInput,
-  condition?: ModelUserLibraryConditionInput | null,
-};
-
-export type UpdateUserLibraryMutation = {
-  updateUserLibrary?:  {
-    __typename: "UserLibrary",
-    id: string,
-    articleID: string,
-    userID: string,
-    article:  {
-      __typename: "Article",
-      id: string,
-      name: string,
-      url: string,
-      date: string,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        nextToken?: string | null,
-      } | null,
-      users?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    user:  {
-      __typename: "User",
-      id: string,
-      name: string,
-      savedArticles?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type DeleteUserLibraryMutationVariables = {
-  input: DeleteUserLibraryInput,
-  condition?: ModelUserLibraryConditionInput | null,
-};
-
-export type DeleteUserLibraryMutation = {
-  deleteUserLibrary?:  {
-    __typename: "UserLibrary",
-    id: string,
-    articleID: string,
-    userID: string,
-    article:  {
-      __typename: "Article",
-      id: string,
-      name: string,
-      url: string,
-      date: string,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        nextToken?: string | null,
-      } | null,
-      users?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    user:  {
-      __typename: "User",
-      id: string,
-      name: string,
-      savedArticles?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -702,30 +472,6 @@ export type GetArticleQuery = {
     name: string,
     url: string,
     date: string,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items:  Array< {
-        __typename: "Comment",
-        id: string,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-        articleCommentsId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    users?:  {
-      __typename: "ModelUserLibraryConnection",
-      items:  Array< {
-        __typename: "UserLibrary",
-        id: string,
-        articleID: string,
-        userID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -746,14 +492,6 @@ export type ListArticlesQuery = {
       name: string,
       url: string,
       date: string,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        nextToken?: string | null,
-      } | null,
-      users?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -770,18 +508,6 @@ export type GetUserQuery = {
     __typename: "User",
     id: string,
     name: string,
-    savedArticles?:  {
-      __typename: "ModelUserLibraryConnection",
-      items:  Array< {
-        __typename: "UserLibrary",
-        id: string,
-        articleID: string,
-        userID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -800,10 +526,44 @@ export type ListUsersQuery = {
       __typename: "User",
       id: string,
       name: string,
-      savedArticles?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null >,
+    nextToken?: string | null,
+  } | null,
+};
+
+export type GetUserArticleQueryVariables = {
+  id: string,
+};
+
+export type GetUserArticleQuery = {
+  getUserArticle?:  {
+    __typename: "UserArticle",
+    articleId: string,
+    userId: string,
+    page: number,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type ListUserArticlesQueryVariables = {
+  filter?: ModelUserArticleFilterInput | null,
+  limit?: number | null,
+  nextToken?: string | null,
+};
+
+export type ListUserArticlesQuery = {
+  listUserArticles?:  {
+    __typename: "ModelUserArticleConnection",
+    items:  Array< {
+      __typename: "UserArticle",
+      articleId: string,
+      userId: string,
+      page: number,
+      id: string,
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -819,27 +579,10 @@ export type GetCommentQuery = {
   getComment?:  {
     __typename: "Comment",
     id: string,
-    article:  {
-      __typename: "Article",
-      id: string,
-      name: string,
-      url: string,
-      date: string,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        nextToken?: string | null,
-      } | null,
-      users?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
+    articleId: string,
     content: string,
     createdAt: string,
     updatedAt: string,
-    articleCommentsId?: string | null,
   } | null,
 };
 
@@ -855,97 +598,8 @@ export type ListCommentsQuery = {
     items:  Array< {
       __typename: "Comment",
       id: string,
-      article:  {
-        __typename: "Article",
-        id: string,
-        name: string,
-        url: string,
-        date: string,
-        createdAt: string,
-        updatedAt: string,
-      },
+      articleId: string,
       content: string,
-      createdAt: string,
-      updatedAt: string,
-      articleCommentsId?: string | null,
-    } | null >,
-    nextToken?: string | null,
-  } | null,
-};
-
-export type GetUserLibraryQueryVariables = {
-  id: string,
-};
-
-export type GetUserLibraryQuery = {
-  getUserLibrary?:  {
-    __typename: "UserLibrary",
-    id: string,
-    articleID: string,
-    userID: string,
-    article:  {
-      __typename: "Article",
-      id: string,
-      name: string,
-      url: string,
-      date: string,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        nextToken?: string | null,
-      } | null,
-      users?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    user:  {
-      __typename: "User",
-      id: string,
-      name: string,
-      savedArticles?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type ListUserLibrariesQueryVariables = {
-  filter?: ModelUserLibraryFilterInput | null,
-  limit?: number | null,
-  nextToken?: string | null,
-};
-
-export type ListUserLibrariesQuery = {
-  listUserLibraries?:  {
-    __typename: "ModelUserLibraryConnection",
-    items:  Array< {
-      __typename: "UserLibrary",
-      id: string,
-      articleID: string,
-      userID: string,
-      article:  {
-        __typename: "Article",
-        id: string,
-        name: string,
-        url: string,
-        date: string,
-        createdAt: string,
-        updatedAt: string,
-      },
-      user:  {
-        __typename: "User",
-        id: string,
-        name: string,
-        createdAt: string,
-        updatedAt: string,
-      },
       createdAt: string,
       updatedAt: string,
     } | null >,
@@ -960,30 +614,6 @@ export type OnCreateArticleSubscription = {
     name: string,
     url: string,
     date: string,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items:  Array< {
-        __typename: "Comment",
-        id: string,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-        articleCommentsId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    users?:  {
-      __typename: "ModelUserLibraryConnection",
-      items:  Array< {
-        __typename: "UserLibrary",
-        id: string,
-        articleID: string,
-        userID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -996,30 +626,6 @@ export type OnUpdateArticleSubscription = {
     name: string,
     url: string,
     date: string,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items:  Array< {
-        __typename: "Comment",
-        id: string,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-        articleCommentsId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    users?:  {
-      __typename: "ModelUserLibraryConnection",
-      items:  Array< {
-        __typename: "UserLibrary",
-        id: string,
-        articleID: string,
-        userID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1032,30 +638,6 @@ export type OnDeleteArticleSubscription = {
     name: string,
     url: string,
     date: string,
-    comments?:  {
-      __typename: "ModelCommentConnection",
-      items:  Array< {
-        __typename: "Comment",
-        id: string,
-        content: string,
-        createdAt: string,
-        updatedAt: string,
-        articleCommentsId?: string | null,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
-    users?:  {
-      __typename: "ModelUserLibraryConnection",
-      items:  Array< {
-        __typename: "UserLibrary",
-        id: string,
-        articleID: string,
-        userID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1066,18 +648,6 @@ export type OnCreateUserSubscription = {
     __typename: "User",
     id: string,
     name: string,
-    savedArticles?:  {
-      __typename: "ModelUserLibraryConnection",
-      items:  Array< {
-        __typename: "UserLibrary",
-        id: string,
-        articleID: string,
-        userID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1088,18 +658,6 @@ export type OnUpdateUserSubscription = {
     __typename: "User",
     id: string,
     name: string,
-    savedArticles?:  {
-      __typename: "ModelUserLibraryConnection",
-      items:  Array< {
-        __typename: "UserLibrary",
-        id: string,
-        articleID: string,
-        userID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1110,18 +668,42 @@ export type OnDeleteUserSubscription = {
     __typename: "User",
     id: string,
     name: string,
-    savedArticles?:  {
-      __typename: "ModelUserLibraryConnection",
-      items:  Array< {
-        __typename: "UserLibrary",
-        id: string,
-        articleID: string,
-        userID: string,
-        createdAt: string,
-        updatedAt: string,
-      } | null >,
-      nextToken?: string | null,
-    } | null,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnCreateUserArticleSubscription = {
+  onCreateUserArticle?:  {
+    __typename: "UserArticle",
+    articleId: string,
+    userId: string,
+    page: number,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnUpdateUserArticleSubscription = {
+  onUpdateUserArticle?:  {
+    __typename: "UserArticle",
+    articleId: string,
+    userId: string,
+    page: number,
+    id: string,
+    createdAt: string,
+    updatedAt: string,
+  } | null,
+};
+
+export type OnDeleteUserArticleSubscription = {
+  onDeleteUserArticle?:  {
+    __typename: "UserArticle",
+    articleId: string,
+    userId: string,
+    page: number,
+    id: string,
     createdAt: string,
     updatedAt: string,
   } | null,
@@ -1131,27 +713,10 @@ export type OnCreateCommentSubscription = {
   onCreateComment?:  {
     __typename: "Comment",
     id: string,
-    article:  {
-      __typename: "Article",
-      id: string,
-      name: string,
-      url: string,
-      date: string,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        nextToken?: string | null,
-      } | null,
-      users?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
+    articleId: string,
     content: string,
     createdAt: string,
     updatedAt: string,
-    articleCommentsId?: string | null,
   } | null,
 };
 
@@ -1159,27 +724,10 @@ export type OnUpdateCommentSubscription = {
   onUpdateComment?:  {
     __typename: "Comment",
     id: string,
-    article:  {
-      __typename: "Article",
-      id: string,
-      name: string,
-      url: string,
-      date: string,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        nextToken?: string | null,
-      } | null,
-      users?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
+    articleId: string,
     content: string,
     createdAt: string,
     updatedAt: string,
-    articleCommentsId?: string | null,
   } | null,
 };
 
@@ -1187,142 +735,8 @@ export type OnDeleteCommentSubscription = {
   onDeleteComment?:  {
     __typename: "Comment",
     id: string,
-    article:  {
-      __typename: "Article",
-      id: string,
-      name: string,
-      url: string,
-      date: string,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        nextToken?: string | null,
-      } | null,
-      users?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
+    articleId: string,
     content: string,
-    createdAt: string,
-    updatedAt: string,
-    articleCommentsId?: string | null,
-  } | null,
-};
-
-export type OnCreateUserLibrarySubscription = {
-  onCreateUserLibrary?:  {
-    __typename: "UserLibrary",
-    id: string,
-    articleID: string,
-    userID: string,
-    article:  {
-      __typename: "Article",
-      id: string,
-      name: string,
-      url: string,
-      date: string,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        nextToken?: string | null,
-      } | null,
-      users?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    user:  {
-      __typename: "User",
-      id: string,
-      name: string,
-      savedArticles?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnUpdateUserLibrarySubscription = {
-  onUpdateUserLibrary?:  {
-    __typename: "UserLibrary",
-    id: string,
-    articleID: string,
-    userID: string,
-    article:  {
-      __typename: "Article",
-      id: string,
-      name: string,
-      url: string,
-      date: string,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        nextToken?: string | null,
-      } | null,
-      users?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    user:  {
-      __typename: "User",
-      id: string,
-      name: string,
-      savedArticles?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    createdAt: string,
-    updatedAt: string,
-  } | null,
-};
-
-export type OnDeleteUserLibrarySubscription = {
-  onDeleteUserLibrary?:  {
-    __typename: "UserLibrary",
-    id: string,
-    articleID: string,
-    userID: string,
-    article:  {
-      __typename: "Article",
-      id: string,
-      name: string,
-      url: string,
-      date: string,
-      comments?:  {
-        __typename: "ModelCommentConnection",
-        nextToken?: string | null,
-      } | null,
-      users?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
-    user:  {
-      __typename: "User",
-      id: string,
-      name: string,
-      savedArticles?:  {
-        __typename: "ModelUserLibraryConnection",
-        nextToken?: string | null,
-      } | null,
-      createdAt: string,
-      updatedAt: string,
-    },
     createdAt: string,
     updatedAt: string,
   } | null,
